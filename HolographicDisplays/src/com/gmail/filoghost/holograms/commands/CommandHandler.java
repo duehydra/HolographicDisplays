@@ -1,0 +1,96 @@
+package com.gmail.filoghost.holograms.commands;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.bukkit.ChatColor.*;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import com.gmail.filoghost.holograms.Format;
+import com.gmail.filoghost.holograms.HolographicDisplays;
+import com.gmail.filoghost.holograms.commands.subs.*;
+import com.gmail.filoghost.holograms.exception.CommandException;
+
+public class CommandHandler implements CommandExecutor {
+
+	private List<HologramSubCommand> subCommands;
+	
+	public CommandHandler() {
+		subCommands = new ArrayList<HologramSubCommand>();
+		
+		registerSubCommand(new AddlineCommand());
+		registerSubCommand(new CreateCommand());
+		registerSubCommand(new DeleteCommand());
+		registerSubCommand(new EditCommand());
+		registerSubCommand(new ListCommand());
+		registerSubCommand(new TeleportCommand());
+		registerSubCommand(new MovehereCommand());
+		registerSubCommand(new SaveCommand());
+		registerSubCommand(new ReloadCommand());
+		
+		registerSubCommand(new RemovelineCommand());
+		registerSubCommand(new SetlineCommand());
+		registerSubCommand(new InsertlineCommand());
+		registerSubCommand(new ReadtextCommand());
+		registerSubCommand(new ReadimageCommand());
+		
+		registerSubCommand(new HelpCommand());
+	}
+	
+	public void registerSubCommand(HologramSubCommand subCommand) {
+		subCommands.add(subCommand);
+	}
+	
+	public List<HologramSubCommand> getSubCommands() {
+		return new ArrayList<HologramSubCommand>(subCommands);
+	}
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		
+		if (args.length == 0) {
+			sender.sendMessage("");
+			sender.sendMessage(Format.formatTitle("Holographic Displays"));
+			sender.sendMessage(Format.HIGHLIGHT + "Version: §7" + HolographicDisplays.getInstance().getDescription().getVersion());
+			sender.sendMessage(Format.HIGHLIGHT + "Developer: §7filoghost");
+			sender.sendMessage(Format.HIGHLIGHT + "Commands: §7/hd help");
+			return true;
+		}
+		
+		if (!(sender instanceof Player)) {
+			sender.sendMessage(RED + "You must be a player to use this command.");
+			return true;
+		}
+		Player player = (Player) sender;
+		
+		
+		for (HologramSubCommand subCommand : subCommands) {
+			if (subCommand.isValidTrigger(args[0])) {
+				
+				if (!subCommand.hasPermission(player)) {
+					player.sendMessage("§cYou don't have permission.");
+					return true;
+				}
+				
+				if (args.length - 1 >= subCommand.getMinimumArguments()) {
+					try {
+						subCommand.execute(player, Arrays.copyOfRange(args, 1, args.length));
+					} catch (CommandException e) {
+						player.sendMessage(RED + e.getMessage());
+					}
+				} else {
+					player.sendMessage("§cUsage: /" + label + " " + subCommand.getName() + " " + subCommand.getPossibleArguments());
+				}
+				
+				return true;
+			}
+		}
+		
+		player.sendMessage("§cUnknown sub-command. Type \"/hd help\" for a list of commands.");
+		return true;
+	}
+}

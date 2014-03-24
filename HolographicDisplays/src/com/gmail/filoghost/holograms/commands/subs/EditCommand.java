@@ -1,0 +1,87 @@
+package com.gmail.filoghost.holograms.commands.subs;
+
+import static org.bukkit.ChatColor.AQUA;
+import static org.bukkit.ChatColor.BOLD;
+import static org.bukkit.ChatColor.GOLD;
+import static org.bukkit.ChatColor.ITALIC;
+import static org.bukkit.ChatColor.UNDERLINE;
+import static org.bukkit.ChatColor.WHITE;
+import static org.bukkit.ChatColor.YELLOW;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+import com.gmail.filoghost.holograms.Format;
+import com.gmail.filoghost.holograms.HolographicDisplays;
+import com.gmail.filoghost.holograms.commands.CommandValidator;
+import com.gmail.filoghost.holograms.commands.HologramSubCommand;
+import com.gmail.filoghost.holograms.commands.Messages;
+import com.gmail.filoghost.holograms.exception.CommandException;
+import com.gmail.filoghost.holograms.object.CraftHologram;
+import com.gmail.filoghost.holograms.object.HologramManager;
+import com.gmail.filoghost.holograms.utils.ItemUtils;
+
+public class EditCommand extends HologramSubCommand {
+
+	public EditCommand() {
+		super("edit");
+		setPermission(Messages.MAIN_PERMISSION);
+	}
+
+	@Override
+	public String getPossibleArguments() {
+		return "<hologramName>";
+	}
+
+	@Override
+	public int getMinimumArguments() {
+		return 1;
+	}
+
+
+	@Override
+	public void execute(Player sender, String[] args) throws CommandException {
+		String name = args[0].toLowerCase();
+		CraftHologram hologram = HologramManager.getHologram(name);
+		CommandValidator.notNull(hologram, Messages.NO_SUCH_HOLOGRAM);
+		
+		sender.sendMessage("");
+		sender.sendMessage(Format.formatTitle("How to edit the hologram '" + name + "'"));
+		for (HologramSubCommand subCommand : HolographicDisplays.getInstance().getCommandHandler().getSubCommands()) {
+			if (subCommand.getType() == SubCommandType.EDIT_LINES) {
+				String usage = "/hd " + subCommand.getName() + (subCommand.getPossibleArguments().length() > 0 ? " " + subCommand.getPossibleArguments().replace("<hologramName>", hologram.getName()).replace("<hologram>", hologram.getName()) : "");
+				HolographicDisplays.getNmsManager().newFancyMessage(usage)
+					.color(AQUA)
+					.suggest(usage)
+					.itemTooltip(ItemUtils.getStone("§b" + usage, subCommand.getTutorial(), ChatColor.GRAY))
+				.send(sender);
+			}
+		}
+		sender.sendMessage("");
+		HolographicDisplays.getNmsManager().newFancyMessage("[").color(GOLD)
+		.then("Tip").style(BOLD).color(YELLOW)
+		.then("]").color(GOLD)
+		.then(" Try to ").color(WHITE)
+		.then("hover").color(WHITE).style(ITALIC, UNDERLINE)
+		.tooltip("§dHover on the commands to get info about them.")
+		.then(" or ")
+		.then("click").color(WHITE).style(ITALIC, UNDERLINE)
+		.tooltip("§dClick on the commands to insert them in the chat.")
+		.then(" on the commands!")
+		.send(sender);
+	}
+
+	@Override
+	public List<String> getTutorial() {
+		return Arrays.asList("Shows the commands to manipulate an existing hologram.");
+	}
+	
+	@Override
+	public SubCommandType getType() {
+		return SubCommandType.GENERIC;
+	}
+
+}
