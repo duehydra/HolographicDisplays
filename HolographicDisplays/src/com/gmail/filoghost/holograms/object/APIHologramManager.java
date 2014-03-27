@@ -34,10 +34,10 @@ public class APIHologramManager {
 	}
 	
 	public static void remove(Hologram hologram) {
+		hologram.hide();
 		for (List<Hologram> pluginHologramList : apiHolograms.values()) {
 			pluginHologramList.remove(hologram);
 		}
-		hologram.hide();
 	}
 	
 	public static List<Hologram> getHolograms(Plugin plugin) {

@@ -10,13 +10,22 @@ import org.bukkit.World;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.api.Hologram;
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
+import com.gmail.filoghost.holograms.nms.GenericEntityHologramHorse;
+import com.gmail.filoghost.holograms.nms.GenericEntityHologramWitherSkull;
 
 /**
  * This class is only used by the plugin itself. Other plugins should just use the API.
  */
+
+//TODO Nota importante: fare in modo che le entità che contengono dei placeholder vengano messe da parte per essere aggiornate. vengono cambiare solo con refresh!
 public class CraftHologram extends Hologram {
 
-	private List<HologramLine> lines;
+	private static final double VERTICAL_OFFSET = 54.4;
+	
+	private List<GenericEntityHologramHorse> horses;
+	private List<GenericEntityHologramWitherSkull> witherSkulls;
+	
+	private List<String> lines;	
 	
 	private String name;
 	private World bukkitWorld;
@@ -35,7 +44,9 @@ public class CraftHologram extends Hologram {
 		z = source.getZ();
 		chunkX = source.getChunk().getX();
 		chunkZ = source.getChunk().getZ();
-		lines = new ArrayList<HologramLine>();
+		lines = new ArrayList<String>();
+		horses = new ArrayList<GenericEntityHologramHorse>();
+		witherSkulls = new ArrayList<GenericEntityHologramWitherSkull>();
 	}
 	
 	public void setLocation(Location source) {
@@ -96,7 +107,7 @@ public class CraftHologram extends Hologram {
 			message = message.substring(0, 300);
 		}
 		
-		lines.add(new HologramLine(this, message));
+		lines.add(message);
 	}
 	
 	public void insertLine(int index, String message) {
@@ -108,19 +119,11 @@ public class CraftHologram extends Hologram {
 			message = message.substring(0, 300);
 		}
 		
-		lines.add(index, new HologramLine(this, message));
+		lines.add(index, message);
 	}
 
 	public List<String> getLines() {
-		List<String> stringLines = new ArrayList<String>(this.lines.size());
-		for (HologramLine hologramLine : lines) {
-			if (hologramLine.getText() != null) {
-				stringLines.add(hologramLine.getText());
-			} else {
-				stringLines.add("");
-			}
-		}
-		return stringLines;
+		return new ArrayList<String>(lines);
 	}
 	
 	public void setLine(int index, String text) {
@@ -132,7 +135,7 @@ public class CraftHologram extends Hologram {
 			text = text.substring(0, 300);
 		}
 		
-		lines.set(index, new HologramLine(this, text));
+		lines.set(index, text);
 	}
 	
 	public void clearLines() {
@@ -165,8 +168,20 @@ public class CraftHologram extends Hologram {
 		
 		try {
 			
+			double lineSpacing = HolographicDisplays.getVerticalLineSpacing();
+			
 			for (int i = 0; i < lines.size(); i++) {
-				lines.get(i).spawn(bukkitWorld, x, y - (HolographicDisplays.getVerticalLineSpacing()*i), z);
+				String line = lines.get(i);
+				
+				if (line == null || line.length() == 0) continue;
+				GenericEntityHologramHorse horse = HolographicDisplays.getNmsManager().spawnHologramHorse(bukkitWorld, x, y + VERTICAL_OFFSET - (i*lineSpacing), z, this);
+				horses.add(horse);
+				GenericEntityHologramWitherSkull witherSkull = HolographicDisplays.getNmsManager().spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET - (i*lineSpacing), z, this);
+				witherSkulls.add(witherSkull);
+				horse.rideSkull(witherSkull); // Let the horse ride the wither skull.
+				horse.forceSetCustomName(line); // Other plugins cannot change it.
+				horse.setLockTick(true);
+				witherSkull.setLockTick(true);
 			}
 			
 		} catch (SpawnFailedException ex) {
@@ -180,8 +195,11 @@ public class CraftHologram extends Hologram {
 
 
 	public void hide() {
-		for (HologramLine line : lines) {
-			line.remove();
+		for (GenericEntityHologramHorse horse : horses) {
+			horse.die();
+		}
+		for (GenericEntityHologramWitherSkull witherSkull : witherSkulls) {
+			witherSkull.die();
 		}
 	}
 	
