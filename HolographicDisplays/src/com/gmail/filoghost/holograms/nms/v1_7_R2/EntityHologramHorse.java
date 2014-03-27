@@ -128,4 +128,9 @@ public class EntityHologramHorse extends EntityHorse implements HologramComponen
 		this.setPassengerOf((EntityHologramWitherSkull) skull);		
 	}
 
+	@Override
+	public boolean isDead() {
+		return this.dead;
+	}
+
 }

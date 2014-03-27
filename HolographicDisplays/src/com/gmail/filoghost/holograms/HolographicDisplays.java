@@ -18,6 +18,7 @@ import com.gmail.filoghost.holograms.nms.GenericNmsManager;
 import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
+import com.gmail.filoghost.holograms.placeholders.PlaceholderManager;
 import com.gmail.filoghost.holograms.utils.VersionUtils;
 
 public class HolographicDisplays extends JavaPlugin {
@@ -29,6 +30,7 @@ public class HolographicDisplays extends JavaPlugin {
 	
 	private static GenericNmsManager nmsManager;
 	private CommandHandler commandHandler;
+	private static PlaceholderManager placeholderManager;
 	
 	public void onEnable() {
 		instance = this;
@@ -81,7 +83,9 @@ public class HolographicDisplays extends JavaPlugin {
 			return;
 		}
 		
+		placeholderManager = new PlaceholderManager();
 		
+		// Initalize static classes.
 		Database.initialize();
 		
 		Set<String> savedHolograms = Database.getHolograms();
@@ -164,5 +168,9 @@ public class HolographicDisplays extends JavaPlugin {
 
 	public CommandHandler getCommandHandler() {
 		return commandHandler;
+	}
+
+	public static PlaceholderManager getPlaceholderManager() {
+		return placeholderManager;
 	}	
 }

@@ -37,7 +37,11 @@ public class AddlineCommand extends HologramSubCommand {
 		CraftHologram hologram = HologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Messages.NO_SUCH_HOLOGRAM);
 
-		hologram.addLine(StringUtils.toReadableFormat(StringUtils.join(args, " ", 1, args.length)));
+		if (args[1].equalsIgnoreCase("{empty}")) {
+			hologram.addLine("");
+		} else {
+			hologram.addLine(StringUtils.toReadableFormat(StringUtils.join(args, " ", 1, args.length)));
+		}
 		if (!hologram.update()) {
 			sender.sendMessage(Messages.FAILED_TO_SPAWN_HERE);
 		}

@@ -43,7 +43,11 @@ public class SetlineCommand extends HologramSubCommand {
 		CommandValidator.isTrue(lineNumber >= 1 && lineNumber <= hologram.getLinesLength(), "The line number must be between 1 and " + hologram.getLinesLength() + ".");
 		int index = lineNumber - 1;
 		
-		hologram.setLine(index, StringUtils.toReadableFormat(org.apache.commons.lang.StringUtils.join(args, " ", 2, args.length)));
+		if (args[2].equalsIgnoreCase("{empty}")) {
+			hologram.setLine(index, "");
+		} else {
+			hologram.setLine(index, StringUtils.toReadableFormat(org.apache.commons.lang.StringUtils.join(args, " ", 2, args.length)));
+		}
 			
 		if (!hologram.update()) {
 			sender.sendMessage(Messages.FAILED_TO_SPAWN_HERE);

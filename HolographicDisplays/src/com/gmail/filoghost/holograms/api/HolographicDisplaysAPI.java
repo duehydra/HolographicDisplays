@@ -1,5 +1,6 @@
 package com.gmail.filoghost.holograms.api;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +37,11 @@ public class HolographicDisplaysAPI {
 	 * This does not return a CraftHologram, but only a Hologram, with less confusing methods.
 	 */
 	public static Hologram createHologram(Plugin plugin, Location source, String... lines) {
-		return createHologram(plugin, source, Arrays.asList(lines));
+		if (lines != null && lines.length > 0) {
+			return createHologram(plugin, source, Arrays.asList(lines));
+		} else {
+			return createHologram(plugin, source, new ArrayList<String>());
+		}
 	}
 	
 	/**

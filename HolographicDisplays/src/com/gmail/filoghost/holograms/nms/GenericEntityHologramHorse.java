@@ -10,7 +10,12 @@ public interface GenericEntityHologramHorse {
 	
 	public CraftHologram getHologram();
 	
-	public void rideSkull(GenericEntityHologramWitherSkull skull); 
+	public void rideSkull(GenericEntityHologramWitherSkull skull);
 	
 	public void die();
+	
+	public boolean isDead();
+	
+	public String getCustomName();
+	
 }

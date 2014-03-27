@@ -17,7 +17,6 @@ import com.gmail.filoghost.holograms.nms.GenericEntityHologramWitherSkull;
  * This class is only used by the plugin itself. Other plugins should just use the API.
  */
 
-//TODO Nota importante: fare in modo che le entità che contengono dei placeholder vengano messe da parte per essere aggiornate. vengono cambiare solo con refresh!
 public class CraftHologram extends Hologram {
 
 	private static final double VERTICAL_OFFSET = 54.4;
@@ -172,7 +171,6 @@ public class CraftHologram extends Hologram {
 			
 			for (int i = 0; i < lines.size(); i++) {
 				String line = lines.get(i);
-				
 				if (line == null || line.length() == 0) continue;
 				GenericEntityHologramHorse horse = HolographicDisplays.getNmsManager().spawnHologramHorse(bukkitWorld, x, y + VERTICAL_OFFSET - (i*lineSpacing), z, this);
 				horses.add(horse);
@@ -182,6 +180,9 @@ public class CraftHologram extends Hologram {
 				horse.forceSetCustomName(line); // Other plugins cannot change it.
 				horse.setLockTick(true);
 				witherSkull.setLockTick(true);
+				
+				// Placeholders.
+				HolographicDisplays.getPlaceholderManager().trackIfNecessary(horse);
 			}
 			
 		} catch (SpawnFailedException ex) {
