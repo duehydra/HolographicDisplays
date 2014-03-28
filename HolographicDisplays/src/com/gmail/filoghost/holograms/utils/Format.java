@@ -1,4 +1,4 @@
-package com.gmail.filoghost.holograms;
+package com.gmail.filoghost.holograms.utils;
 
 public class Format {
 

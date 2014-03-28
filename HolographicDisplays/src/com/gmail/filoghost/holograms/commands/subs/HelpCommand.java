@@ -8,12 +8,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.filoghost.holograms.Format;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.commands.CommandValidator;
 import com.gmail.filoghost.holograms.commands.HologramSubCommand;
 import com.gmail.filoghost.holograms.commands.Messages;
 import com.gmail.filoghost.holograms.exception.CommandException;
+import com.gmail.filoghost.holograms.utils.Format;
 import com.gmail.filoghost.holograms.utils.ItemUtils;
 
 public class HelpCommand extends HologramSubCommand {

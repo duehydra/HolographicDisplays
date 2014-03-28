@@ -14,6 +14,7 @@ import com.gmail.filoghost.holograms.exception.HologramNotFoundException;
 import com.gmail.filoghost.holograms.exception.InvalidLocationException;
 import com.gmail.filoghost.holograms.exception.WorldNotFoundException;
 import com.gmail.filoghost.holograms.listener.MainListener;
+import com.gmail.filoghost.holograms.metrics.MetricsLite;
 import com.gmail.filoghost.holograms.nms.GenericNmsManager;
 import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;

@@ -9,10 +9,11 @@ import static org.bukkit.ChatColor.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import com.gmail.filoghost.holograms.Format;
+
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.commands.subs.*;
 import com.gmail.filoghost.holograms.exception.CommandException;
+import com.gmail.filoghost.holograms.utils.Format;
 
 public class CommandHandler implements CommandExecutor {
 

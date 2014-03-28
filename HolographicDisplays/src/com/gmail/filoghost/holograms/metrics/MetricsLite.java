@@ -26,7 +26,7 @@
  * either expressed or implied, of anybody else.
  */
 
-package com.gmail.filoghost.holograms;
+package com.gmail.filoghost.holograms.metrics;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;

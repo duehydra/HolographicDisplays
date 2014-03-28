@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import com.gmail.filoghost.holograms.Format;
 import com.gmail.filoghost.holograms.commands.CommandValidator;
 import com.gmail.filoghost.holograms.commands.HologramSubCommand;
 import com.gmail.filoghost.holograms.commands.Messages;
@@ -17,6 +16,7 @@ import com.gmail.filoghost.holograms.exception.InvalidCharactersException;
 import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
+import com.gmail.filoghost.holograms.utils.Format;
 import com.gmail.filoghost.holograms.utils.StringUtils;
 
 public class CreateCommand extends HologramSubCommand {

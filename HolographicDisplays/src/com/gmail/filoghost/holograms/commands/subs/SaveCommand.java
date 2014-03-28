@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
-import com.gmail.filoghost.holograms.Format;
 import com.gmail.filoghost.holograms.commands.HologramSubCommand;
 import com.gmail.filoghost.holograms.commands.Messages;
 import com.gmail.filoghost.holograms.exception.CommandException;
 import com.gmail.filoghost.holograms.object.Database;
+import com.gmail.filoghost.holograms.utils.Format;
 
 public class SaveCommand extends HologramSubCommand {
 
