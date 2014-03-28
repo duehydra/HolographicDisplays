@@ -16,7 +16,7 @@ public class EntityAndNamePair {
 		return horse;
 	}
 
-	public String getOriginalName() {
+	public String getSavedName() {
 		return originalName;
 	}
 	

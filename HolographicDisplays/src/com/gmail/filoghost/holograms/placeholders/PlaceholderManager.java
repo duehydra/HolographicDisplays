@@ -49,6 +49,8 @@ public class PlaceholderManager {
 		
 		if (containsAnyPlaceholder) {
 			horsesToRefresh.add(new EntityAndNamePair(horse, customName));
+			updatePlaceholders(horse, customName);
+			
 		}
 	}
 	
@@ -79,18 +81,7 @@ public class PlaceholderManager {
 					if (pair.getHorse().isDead()) {
 						iter.remove();
 					} else {
-						
-						String oldCustomName = pair.getHorse().getCustomName();
-						String newCustomName = pair.getOriginalName();
-						
-						for (Placeholder placeholder : registeredPlaceholders) {
-							newCustomName = newCustomName.replace(placeholder.getShortPlaceholder(), placeholder.getReplacement());
-						}
-						
-						// Update only if needed, don't send useless packets.
-						if (!oldCustomName.equals(newCustomName)) {
-							pair.getHorse().forceSetCustomName(newCustomName);
-						}
+						updatePlaceholders(pair.getHorse(), pair.getSavedName());
 					}
 				}
 				
@@ -98,6 +89,20 @@ public class PlaceholderManager {
 			}
 			
 		}, 4L, 4L);
+	}
+	
+	private void updatePlaceholders(GenericEntityHologramHorse horse, String newCustomName) {
+		
+		String oldCustomName = horse.getCustomName();
+		
+		for (Placeholder placeholder : registeredPlaceholders) {
+			newCustomName = newCustomName.replace(placeholder.getShortPlaceholder(), placeholder.getReplacement());
+		}
+		
+		// Update only if needed, don't send useless packets.
+		if (!oldCustomName.equals(newCustomName)) {
+			horse.forceSetCustomName(newCustomName);
+		}
 	}
 
 }
