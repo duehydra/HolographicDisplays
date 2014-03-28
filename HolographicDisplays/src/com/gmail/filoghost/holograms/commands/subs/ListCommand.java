@@ -3,8 +3,7 @@ package com.gmail.filoghost.holograms.commands.subs;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.entity.Player;
-
+import org.bukkit.command.CommandSender;
 import com.gmail.filoghost.holograms.Format;
 import com.gmail.filoghost.holograms.commands.CommandValidator;
 import com.gmail.filoghost.holograms.commands.HologramSubCommand;
@@ -33,7 +32,7 @@ public class ListCommand extends HologramSubCommand {
 	}
 
 	@Override
-	public void execute(Player sender, String[] args) throws CommandException {
+	public void execute(CommandSender sender, String[] args) throws CommandException {
 
 		int page = args.length > 0 ? CommandValidator.getInteger(args[0]) : 1;
 

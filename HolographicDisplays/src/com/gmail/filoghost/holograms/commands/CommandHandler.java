@@ -9,7 +9,6 @@ import static org.bukkit.ChatColor.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import com.gmail.filoghost.holograms.Format;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.commands.subs.*;
@@ -59,38 +58,31 @@ public class CommandHandler implements CommandExecutor {
 			sender.sendMessage(Format.HIGHLIGHT + "Developer: §7filoghost");
 			sender.sendMessage(Format.HIGHLIGHT + "Commands: §7/hd help");
 			return true;
-		}
-		
-		if (!(sender instanceof Player)) {
-			sender.sendMessage(RED + "You must be a player to use this command.");
-			return true;
-		}
-		Player player = (Player) sender;
-		
+		}		
 		
 		for (HologramSubCommand subCommand : subCommands) {
 			if (subCommand.isValidTrigger(args[0])) {
 				
-				if (!subCommand.hasPermission(player)) {
-					player.sendMessage("§cYou don't have permission.");
+				if (!subCommand.hasPermission(sender)) {
+					sender.sendMessage("§cYou don't have permission.");
 					return true;
 				}
 				
 				if (args.length - 1 >= subCommand.getMinimumArguments()) {
 					try {
-						subCommand.execute(player, Arrays.copyOfRange(args, 1, args.length));
+						subCommand.execute(sender, Arrays.copyOfRange(args, 1, args.length));
 					} catch (CommandException e) {
-						player.sendMessage(RED + e.getMessage());
+						sender.sendMessage(RED + e.getMessage());
 					}
 				} else {
-					player.sendMessage("§cUsage: /" + label + " " + subCommand.getName() + " " + subCommand.getPossibleArguments());
+					sender.sendMessage("§cUsage: /" + label + " " + subCommand.getName() + " " + subCommand.getPossibleArguments());
 				}
 				
 				return true;
 			}
 		}
 		
-		player.sendMessage("§cUnknown sub-command. Type \"/hd help\" for a list of commands.");
+		sender.sendMessage("§cUnknown sub-command. Type \"/hd help\" for a list of commands.");
 		return true;
 	}
 }

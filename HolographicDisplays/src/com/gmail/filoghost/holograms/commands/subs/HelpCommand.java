@@ -5,10 +5,12 @@ import static org.bukkit.ChatColor.*;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.filoghost.holograms.Format;
 import com.gmail.filoghost.holograms.HolographicDisplays;
+import com.gmail.filoghost.holograms.commands.CommandValidator;
 import com.gmail.filoghost.holograms.commands.HologramSubCommand;
 import com.gmail.filoghost.holograms.commands.Messages;
 import com.gmail.filoghost.holograms.exception.CommandException;
@@ -34,21 +36,28 @@ public class HelpCommand extends HologramSubCommand {
 
 
 	@Override
-	public void execute(Player sender, String[] args) throws CommandException {
+	public void execute(CommandSender sender, String[] args) throws CommandException {
 		sender.sendMessage("");
 		sender.sendMessage(Format.formatTitle("Holographic Displays Commands"));
 		for (HologramSubCommand subCommand : HolographicDisplays.getInstance().getCommandHandler().getSubCommands()) {
 			if (subCommand.getType() == SubCommandType.GENERIC) {
 				String usage = "/hd " + subCommand.getName() + (subCommand.getPossibleArguments().length() > 0 ? " " + subCommand.getPossibleArguments() : "");
-				HolographicDisplays.getNmsManager().newFancyMessage(usage)
+				
+				if (CommandValidator.isPlayerSender(sender)) {
+					HolographicDisplays.getNmsManager().newFancyMessage(usage)
 					.color(AQUA)
 					.suggest(usage)
 					.itemTooltip(ItemUtils.getStone("§b" + usage, subCommand.getTutorial(), ChatColor.GRAY))
-				.send(sender);
+					.send((Player) sender);
+				} else {
+					sender.sendMessage("§b" + usage);
+				}
 			}
 		}
-		sender.sendMessage("");
-		HolographicDisplays.getNmsManager().newFancyMessage("[").color(GOLD)
+		
+		if (CommandValidator.isPlayerSender(sender)) {
+			sender.sendMessage("");
+			HolographicDisplays.getNmsManager().newFancyMessage("[").color(GOLD)
 			.then("Tip").style(BOLD).color(YELLOW)
 			.then("]").color(GOLD)
 			.then(" Try to ").color(WHITE)
@@ -58,7 +67,8 @@ public class HelpCommand extends HologramSubCommand {
 			.then("click").color(WHITE).style(ITALIC, UNDERLINE)
 			.tooltip("§dClick on the commands to insert them in the chat.")
 			.then(" on the commands!")
-			.send(sender);
+			.send((Player) sender);
+		}
 	}
 
 	@Override

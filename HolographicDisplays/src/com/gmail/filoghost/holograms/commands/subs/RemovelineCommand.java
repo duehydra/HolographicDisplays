@@ -3,7 +3,7 @@ package com.gmail.filoghost.holograms.commands.subs;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import com.gmail.filoghost.holograms.Format;
 import com.gmail.filoghost.holograms.commands.CommandValidator;
@@ -33,7 +33,7 @@ public class RemovelineCommand extends HologramSubCommand {
 
 
 	@Override
-	public void execute(Player sender, String[] args) throws CommandException {
+	public void execute(CommandSender sender, String[] args) throws CommandException {
 		CraftHologram hologram = HologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Messages.NO_SUCH_HOLOGRAM);
 		

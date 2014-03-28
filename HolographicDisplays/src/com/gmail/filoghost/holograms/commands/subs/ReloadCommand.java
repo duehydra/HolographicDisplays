@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.commands.HologramSubCommand;
@@ -35,7 +35,7 @@ public class ReloadCommand extends HologramSubCommand {
 	}
 
 	@Override
-	public void execute(Player sender, String[] args) throws CommandException {
+	public void execute(CommandSender sender, String[] args) throws CommandException {
 		try {
 			
 			long startMillis = System.currentTimeMillis();

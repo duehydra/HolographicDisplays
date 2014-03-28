@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
@@ -33,14 +34,15 @@ public class TeleportCommand extends HologramSubCommand {
 	}
 
 	@Override
-	public void execute(Player sender, String[] args) throws CommandException {
+	public void execute(CommandSender sender, String[] args) throws CommandException {
+		Player player = CommandValidator.getPlayerSender(sender);
 		CraftHologram hologram = HologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Messages.NO_SUCH_HOLOGRAM);
 		
 		Location loc = hologram.getLocation();
 		loc.setPitch(90);
-		sender.teleport(loc, TeleportCause.PLUGIN);
-		sender.sendMessage(Format.HIGHLIGHT + "You were teleported to the hologram named '" + hologram.getName() + "'.");
+		player.teleport(loc, TeleportCause.PLUGIN);
+		player.sendMessage(Format.HIGHLIGHT + "You were teleported to the hologram named '" + hologram.getName() + "'.");
 
 	}
 

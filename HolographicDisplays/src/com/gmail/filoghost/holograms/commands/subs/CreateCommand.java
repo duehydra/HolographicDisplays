@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
@@ -38,25 +39,26 @@ public class CreateCommand extends HologramSubCommand {
 
 
 	@Override
-	public void execute(Player sender, String[] args) throws CommandException {
+	public void execute(CommandSender sender, String[] args) throws CommandException {
 		try {
+			Player player = CommandValidator.getPlayerSender(sender);
 			String name = StringUtils.validateName(args[0].toLowerCase());
 			CommandValidator.isTrue(!HologramManager.isExistingHologram(name), "A hologram with that name already exists.");
 						
-			CraftHologram hologram = new CraftHologram(StringUtils.validateName(name), sender.getLocation());
+			CraftHologram hologram = new CraftHologram(StringUtils.validateName(name), player.getLocation());
 			HologramManager.addHologram(hologram);
 			
 			hologram.addLine("Default hologram. Change it with " + Format.HIGHLIGHT + "/hd edit " + hologram.getName());
 			if (!hologram.forceUpdate()) {
-				sender.sendMessage(Messages.FAILED_TO_SPAWN_HERE);
+				player.sendMessage(Messages.FAILED_TO_SPAWN_HERE);
 			}
 			
 			Database.saveHologram(hologram);
 			Database.trySaveToDisk();
-			Location look = sender.getLocation();
+			Location look = player.getLocation();
 			look.setPitch(90);
-			sender.teleport(look, TeleportCause.PLUGIN);
-			sender.sendMessage(Format.HIGHLIGHT + "You created a hologram named '" + hologram.getName() + "'.");
+			player.teleport(look, TeleportCause.PLUGIN);
+			player.sendMessage(Format.HIGHLIGHT + "You created a hologram named '" + hologram.getName() + "'.");
 			
 		} catch (InvalidCharactersException ex) {
 			throw new CommandException("The hologram's name must be alphanumeric. '" + ex.getMessage() + "' is not allowed.");

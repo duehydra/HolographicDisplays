@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
@@ -36,23 +37,24 @@ public class MovehereCommand extends HologramSubCommand {
 
 
 	@Override
-	public void execute(Player sender, String[] args) throws CommandException {
+	public void execute(CommandSender sender, String[] args) throws CommandException {
+		Player player = CommandValidator.getPlayerSender(sender);
 		CraftHologram hologram = HologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Messages.NO_SUCH_HOLOGRAM);
 		
 		hologram.hide();
-		hologram.setLocation(sender.getLocation());
+		hologram.setLocation(player.getLocation());
 		
 		if (!hologram.update()) {
-			sender.sendMessage(Messages.FAILED_TO_SPAWN_HERE);
+			player.sendMessage(Messages.FAILED_TO_SPAWN_HERE);
 		}
 		
 		Database.saveHologram(hologram);
 		Database.trySaveToDisk();
-		Location to = sender.getLocation();
+		Location to = player.getLocation();
 		to.setPitch(90);
-		sender.teleport(to, TeleportCause.PLUGIN);
-		sender.sendMessage(Format.HIGHLIGHT + "You moved the hologram '" + hologram.getName() + "' near to you.");
+		player.teleport(to, TeleportCause.PLUGIN);
+		player.sendMessage(Format.HIGHLIGHT + "You moved the hologram '" + hologram.getName() + "' near to you.");
 	}
 
 	@Override

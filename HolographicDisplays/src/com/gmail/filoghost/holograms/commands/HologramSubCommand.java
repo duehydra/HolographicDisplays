@@ -2,7 +2,7 @@ package com.gmail.filoghost.holograms.commands;
 
 import java.util.List;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import com.gmail.filoghost.holograms.exception.CommandException;
 
@@ -33,16 +33,16 @@ public abstract class HologramSubCommand {
 		return permission;
 	}
 	
-	public final boolean hasPermission(Player player) {
+	public final boolean hasPermission(CommandSender sender) {
 		if (permission == null) return true;
-		return player.hasPermission(permission);
+		return sender.hasPermission(permission);
 	}
 	
 	public abstract String getPossibleArguments();
 
 	public abstract int getMinimumArguments();
 
-	public abstract void execute(Player sender, String[] args) throws CommandException;
+	public abstract void execute(CommandSender sender, String[] args) throws CommandException;
 	
 	public abstract List<String> getTutorial();
 	
