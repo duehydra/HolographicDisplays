@@ -55,7 +55,7 @@ public class HelpCommand extends HologramSubCommand {
 			}
 		}
 		
-		if (CommandValidator.isPlayerSender(sender)) {
+		if (CommandValidator.isPlayerSender(sender) && HolographicDisplays.getNmsManager().hasChatHoverFeature()) {
 			sender.sendMessage("");
 			HolographicDisplays.getNmsManager().newFancyMessage("[").color(GOLD)
 			.then("Tip").style(BOLD).color(YELLOW)

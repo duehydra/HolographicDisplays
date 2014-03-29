@@ -1,8 +1,8 @@
-package com.gmail.filoghost.holograms.nms.v1_7_R2;
+package com.gmail.filoghost.holograms.nms.v1_6_R3;
 
 import org.bukkit.Chunk;
-import org.bukkit.craftbukkit.v1_7_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_6_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_6_R3.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
@@ -14,10 +14,10 @@ import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramComponent;
 import com.gmail.filoghost.holograms.utils.ReflectionUtils;
 
-import net.minecraft.server.v1_7_R2.Entity;
-import net.minecraft.server.v1_7_R2.EntityTypes;
-import net.minecraft.server.v1_7_R2.EntityWitherSkull;
-import net.minecraft.server.v1_7_R2.WorldServer;
+import net.minecraft.server.v1_6_R3.Entity;
+import net.minecraft.server.v1_6_R3.EntityTypes;
+import net.minecraft.server.v1_6_R3.EntityWitherSkull;
+import net.minecraft.server.v1_6_R3.WorldServer;
 
 public class NmsManager implements GenericNmsManager {
 
@@ -29,8 +29,8 @@ public class NmsManager implements GenericNmsManager {
 	
 	@SuppressWarnings("rawtypes")
 	public void registerCustomEntity(Class entityClass, String name, int id) throws Exception {
-		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "d", entityClass, name);
-		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "f", entityClass, Integer.valueOf(id));
+		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "c", entityClass, name);
+		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "e", entityClass, Integer.valueOf(id));
 	}
 	
 	@Override
@@ -57,7 +57,7 @@ public class NmsManager implements GenericNmsManager {
 	
 
 	public void removeWitherSkulls(Chunk chunk) {
-		net.minecraft.server.v1_7_R2.Entity nmsEntity;
+		net.minecraft.server.v1_6_R3.Entity nmsEntity;
 		
 		// Remove all the WitherSkulls.
 		for (org.bukkit.entity.Entity entity : chunk.getEntities()) {		
@@ -97,12 +97,12 @@ public class NmsManager implements GenericNmsManager {
 
 	@Override
 	public int getCustomNameLimit() {
-		return 300;
+		return 64;
 	}
 
 	@Override
 	public boolean hasChatHoverFeature() {
-		return true;
+		return false;
 	}
 	
 }

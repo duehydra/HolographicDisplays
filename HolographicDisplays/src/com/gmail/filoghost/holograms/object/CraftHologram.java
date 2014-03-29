@@ -25,6 +25,7 @@ public class CraftHologram extends Hologram {
 	private List<GenericEntityHologramWitherSkull> witherSkulls;
 	
 	private List<String> lines;	
+	private int customNameLimit;
 	
 	private String name;
 	private World bukkitWorld;
@@ -46,6 +47,7 @@ public class CraftHologram extends Hologram {
 		lines = new ArrayList<String>();
 		horses = new ArrayList<GenericEntityHologramHorse>();
 		witherSkulls = new ArrayList<GenericEntityHologramWitherSkull>();
+		customNameLimit = HolographicDisplays.getNmsManager().getCustomNameLimit();
 	}
 	
 	public void setLocation(Location source) {
@@ -65,15 +67,15 @@ public class CraftHologram extends Hologram {
 		return name;
 	}
 	
-	public int getX() {
+	public int getBlockX() {
 		return (int) x;
 	}
 	
-	public int getY() {
+	public int getBlockY() {
 		return (int) y;
 	}
 	
-	public int getZ() {
+	public int getBlockZ() {
 		return (int) z;
 	}
 
@@ -89,7 +91,7 @@ public class CraftHologram extends Hologram {
 		return chunk.getX() == chunkX && chunk.getZ() == chunkZ;
 	}
 	
-	private boolean isInLoadedChunk() {
+	public boolean isInLoadedChunk() {
 		return bukkitWorld.isChunkLoaded(chunkX, chunkZ);
 	}
 	
@@ -102,8 +104,8 @@ public class CraftHologram extends Hologram {
 			message = "";
 		}
 		
-		if (message.length() > 300) {
-			message = message.substring(0, 300);
+		if (message.length() > customNameLimit) {
+			message = message.substring(0, customNameLimit);
 		}
 		
 		lines.add(message);
@@ -114,8 +116,8 @@ public class CraftHologram extends Hologram {
 			message = "";
 		}
 		
-		if (message.length() > 300) {
-			message = message.substring(0, 300);
+		if (message.length() > customNameLimit) {
+			message = message.substring(0, customNameLimit);
 		}
 		
 		lines.add(index, message);
@@ -130,8 +132,8 @@ public class CraftHologram extends Hologram {
 			text = "";
 		}
 		
-		if (text.length() > 300) {
-			text = text.substring(0, 300);
+		if (text.length() > customNameLimit) {
+			text = text.substring(0, customNameLimit);
 		}
 		
 		lines.set(index, text);

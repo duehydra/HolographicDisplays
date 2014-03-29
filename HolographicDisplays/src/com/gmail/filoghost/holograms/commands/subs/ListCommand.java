@@ -54,11 +54,11 @@ public class ListCommand extends HologramSubCommand {
 		for (int i = fromIndex; i < toIndex; i++) {
 			if (i < HologramManager.size()) {
 				CraftHologram hologram = HologramManager.get(i);
-				sender.sendMessage("§3- §f'" + hologram.getName() + "' §7at x: " + hologram.getX() + ", y: " + hologram.getY() + ", z: " + hologram.getZ() + " (" + hologram.getLinesLength() + " lines, world: \"" + hologram.getWorldName() + "\")");
+				sender.sendMessage("§3- §f'" + hologram.getName() + "' §7at x: " + hologram.getBlockX() + ", y: " + hologram.getBlockY() + ", z: " + hologram.getBlockZ() + " (" + hologram.getLinesLength() + " lines, world: \"" + hologram.getWorldName() + "\")");
 			}
 		}
 		if (page < totalPages) {
-			sender.sendMessage("§8[Tip] See the next page with /holograms list " + (page + 1));
+			sender.sendMessage("§f[Tip] §7See the next page with /holograms list " + (page + 1));
 		}
 
 	}

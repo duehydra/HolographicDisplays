@@ -21,4 +21,8 @@ public interface GenericNmsManager {
 	public CraftHologram getHologram(org.bukkit.entity.Entity bukkitEntity);
 	
 	public GenericFancyMessage newFancyMessage(String text);
+	
+	public int getCustomNameLimit();
+	
+	public boolean hasChatHoverFeature();
 }

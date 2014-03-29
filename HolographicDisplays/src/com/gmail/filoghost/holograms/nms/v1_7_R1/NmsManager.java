@@ -94,4 +94,14 @@ public class NmsManager implements GenericNmsManager {
 		return new FancyMessage(text);
 	}
 	
+	@Override
+	public int getCustomNameLimit() {
+		return 300;
+	}
+
+	@Override
+	public boolean hasChatHoverFeature() {
+		return true;
+	}
+	
 }

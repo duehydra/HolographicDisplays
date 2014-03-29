@@ -12,7 +12,7 @@ public class MessagePart {
 	public String clickActionData = null;
 	public String hoverActionName = null;
 	public String hoverActionData = null;
-	final String text;
+	public final String text;
 	
 	public MessagePart(final String text) {
 		this.text = text;

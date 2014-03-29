@@ -43,7 +43,9 @@ public class HolographicDisplays extends JavaPlugin {
 		String version = VersionUtils.getBukkitVersion();
 		
 		// It's simple, we don't need reflection
-		if (version.equals("v1_7_R1")) {
+		if (version.equals("v1_6_R3")) {
+			nmsManager = new com.gmail.filoghost.holograms.nms.v1_6_R3.NmsManager();
+		} else if (version.equals("v1_7_R1")) {
 			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R1.NmsManager();
 		} else if (version.equals("v1_7_R2")) {
 			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R2.NmsManager();
@@ -52,7 +54,7 @@ public class HolographicDisplays extends JavaPlugin {
 					 " \n "
 					+ "\n***************************************************"
 					+ "\n     This version of HolographicDisplays can"
-					+ "\n     only work on Bukkit 1.7.*"
+					+ "\n     only work on Bukkit 1.7.X or 1.6.4"
 					+ "\n     The plugin will be disabled."
 			 		+ "\n***************************************************"
 			 		+ "\n ");

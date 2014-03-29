@@ -3,6 +3,7 @@ package com.gmail.filoghost.holograms.commands.subs;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import com.gmail.filoghost.holograms.commands.CommandValidator;
 import com.gmail.filoghost.holograms.commands.HologramSubCommand;
 import com.gmail.filoghost.holograms.commands.Messages;
+import com.gmail.filoghost.holograms.event.HologramMoveEvent;
 import com.gmail.filoghost.holograms.exception.CommandException;
 import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;
@@ -55,6 +57,9 @@ public class MovehereCommand extends HologramSubCommand {
 		to.setPitch(90);
 		player.teleport(to, TeleportCause.PLUGIN);
 		player.sendMessage(Format.HIGHLIGHT + "You moved the hologram '" + hologram.getName() + "' near to you.");
+		
+		// Call the event.
+		Bukkit.getPluginManager().callEvent(new HologramMoveEvent(hologram));
 	}
 
 	@Override
