@@ -4,3 +4,8 @@
 #.  Plugin created by filoghost.
 #.
 vertical-spacing: 0.25
+images:
+  symbol: '[x]'
+  transparency:
+    space: '[..]'
+    color: '&8'

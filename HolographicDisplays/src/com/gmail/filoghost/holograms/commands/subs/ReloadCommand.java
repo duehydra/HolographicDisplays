@@ -41,7 +41,7 @@ public class ReloadCommand extends HologramSubCommand {
 			long startMillis = System.currentTimeMillis();
 			
 			HolographicDisplays.getInstance().reloadConfig();
-			HolographicDisplays.setVerticalLineSpacing(HolographicDisplays.getInstance().getConfig().getDouble("vertical-spacing"));
+			HolographicDisplays.getInstance().loadConfiguration();
 			
 			Database.initialize();
 			HologramManager.clearAll();
@@ -70,11 +70,11 @@ public class ReloadCommand extends HologramSubCommand {
 			
 			long endMillis = System.currentTimeMillis();
 			
-			sender.sendMessage("§bDatabase reloaded successfully in " + (endMillis - startMillis) + "ms!");
+			sender.sendMessage("§bConfiguration reloaded successfully in " + (endMillis - startMillis) + "ms!");
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			throw new CommandException("Exception while reloading the database. Please look the console.");
+			throw new CommandException("Exception while reloading the configuration. Please look the console.");
 		}
 	}
 	

@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,14 +21,20 @@ import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
 import com.gmail.filoghost.holograms.placeholders.PlaceholderManager;
+import com.gmail.filoghost.holograms.utils.StringUtils;
 import com.gmail.filoghost.holograms.utils.VersionUtils;
+import com.gmail.filoghost.holograms.utils.ConfigNode;
 
 public class HolographicDisplays extends JavaPlugin {
 
 	private static Logger logger;
 	private static HolographicDisplays instance;
 	
-	private static double verticalLineSpacing = 0.25;
+	private static double verticalLineSpacing;
+	private static String imageSymbol;
+	private static String transparencySymbol;
+
+	private static ChatColor transparencyColor;
 	
 	private static GenericNmsManager nmsManager;
 	private CommandHandler commandHandler;
@@ -37,12 +44,11 @@ public class HolographicDisplays extends JavaPlugin {
 		instance = this;
 		logger = this.getLogger();
 		
-		saveDefaultConfig();
-		verticalLineSpacing = getConfig().getDouble("vertical-spacing", 0.25);
+		loadConfiguration();
 		
 		String version = VersionUtils.getBukkitVersion();
 		
-		// It's simple, we don't need reflection
+		// It's simple, we don't need reflection.
 		if (version.equals("v1_6_R3")) {
 			nmsManager = new com.gmail.filoghost.holograms.nms.v1_6_R3.NmsManager();
 		} else if (version.equals("v1_7_R1")) {
@@ -139,6 +145,42 @@ public class HolographicDisplays extends JavaPlugin {
 		}, 10L);
 	}
 	
+	public void loadConfiguration() {
+		saveDefaultConfig();
+		boolean needsSave = false;
+		for (ConfigNode node : ConfigNode.values()) {
+			if (!getConfig().isSet(node.getPath())) {
+				getConfig().set(node.getPath(), node.getDefault());
+				needsSave = true;
+			}
+		}
+		if (needsSave) {
+			getConfig().options().header(".\n"
+									 + ".  Read the tutorial at: http://dev.bukkit.org/bukkit-plugins/holographic-displays/\n"
+									 + ".\n"
+									 + ".  Plugin created by filoghost.\n"
+									 + ".");
+			getConfig().options().copyHeader(true);
+			saveConfig();
+		}
+		
+		verticalLineSpacing = getConfig().getDouble(ConfigNode.VERTICAL_SPACING.getPath());
+		imageSymbol = StringUtils.toReadableFormat(getConfig().getString(ConfigNode.IMAGES_SYMBOL.getPath()));
+		transparencySymbol = StringUtils.toReadableFormat(getConfig().getString(ConfigNode.TRANSPARENCY_SPACE.getPath()));
+		String tempColor = getConfig().getString(ConfigNode.TRANSPARENCY_COLOR.getPath()).replace("&", "§");
+		boolean foundColor = false;
+		for (ChatColor chatColor : ChatColor.values()) {
+			if (chatColor.toString().equals(tempColor)) {
+				transparencyColor = chatColor;
+				foundColor = true;
+			}
+		}
+		if (!foundColor) {
+			transparencyColor = ChatColor.DARK_GRAY;
+			logger.warning("You didn't set a valid chat color for the transparency, dark gray will be used.");
+		}
+	}
+
 	public void onDisable() {
 		for (CraftHologram hologram : HologramManager.getHolograms()) {
 			hologram.hide();
@@ -161,19 +203,27 @@ public class HolographicDisplays extends JavaPlugin {
 		return nmsManager;
 	}
 
-	public static double getVerticalLineSpacing() {
-		return verticalLineSpacing;
-	}
-	
-	public static void setVerticalLineSpacing(double newValue) {
-		verticalLineSpacing = newValue;
-	}
-
 	public CommandHandler getCommandHandler() {
 		return commandHandler;
 	}
 
 	public static PlaceholderManager getPlaceholderManager() {
 		return placeholderManager;
+	}
+
+	public static String getImageSymbol() {
+		return imageSymbol;
+	}
+
+	public static double getVerticalLineSpacing() {
+		return verticalLineSpacing;
+	}
+
+	public static String getTransparencySymbol() {
+		return transparencySymbol;
+	}
+
+	public static ChatColor getTransparencyColor() {
+		return transparencyColor;
 	}	
 }

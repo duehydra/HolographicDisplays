@@ -12,22 +12,22 @@ import com.gmail.filoghost.holograms.api.Hologram;
 
 public class APIHologramManager {
 
-	private static Map<Plugin, List<Hologram>> apiHolograms = new HashMap<Plugin, List<Hologram>>();
+	private static Map<Plugin, List<CraftHologram>> apiHolograms = new HashMap<Plugin, List<CraftHologram>>();
 	
 	public static void onChunkLoad(Chunk chunk) {		
-		for (List<Hologram> pluginHologramList : apiHolograms.values()) {
-			for (Hologram hologram : pluginHologramList) {
+		for (List<CraftHologram> pluginHologramList : apiHolograms.values()) {
+			for (CraftHologram hologram : pluginHologramList) {
 				if (hologram.isInChunk(chunk)) {
-					((CraftHologram) hologram).forceUpdate();
+					hologram.forceUpdate();
 				}
 			}
 		}
 	}
 	
 	public static void addHologram(Plugin plugin, CraftHologram hologram) {
-		List<Hologram> pluginHologramList = apiHolograms.get(plugin);
+		List<CraftHologram> pluginHologramList = apiHolograms.get(plugin);
 		if (pluginHologramList == null) {
-			pluginHologramList = new ArrayList<Hologram>();
+			pluginHologramList = new ArrayList<CraftHologram>();
 			apiHolograms.put(plugin, pluginHologramList);
 		}
 		pluginHologramList.add(hologram);
@@ -35,17 +35,17 @@ public class APIHologramManager {
 	
 	public static void remove(Hologram hologram) {
 		hologram.hide();
-		for (List<Hologram> pluginHologramList : apiHolograms.values()) {
+		for (List<CraftHologram> pluginHologramList : apiHolograms.values()) {
 			pluginHologramList.remove(hologram);
 		}
 	}
 	
-	public static List<Hologram> getHolograms(Plugin plugin) {
-		List<Hologram> pluginHologramList = apiHolograms.get(plugin);
+	public static Hologram[] getHolograms(Plugin plugin) {
+		List<CraftHologram> pluginHologramList = apiHolograms.get(plugin);
 		if (pluginHologramList == null) {
-			return new ArrayList<Hologram>();
+			return new Hologram[0];
 		} else {
-			return new ArrayList<Hologram>(pluginHologramList);
+			return pluginHologramList.toArray(new Hologram[pluginHologramList.size()]);
 			// It's a copy of the original list. Holograms should be removed with hologram.delete()
 		}
 	}

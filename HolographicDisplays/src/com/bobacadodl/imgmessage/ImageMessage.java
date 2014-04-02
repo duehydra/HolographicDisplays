@@ -2,6 +2,7 @@ package com.bobacadodl.imgmessage;
 
 import org.bukkit.ChatColor;
 
+import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.exception.TooWideException;
 
 import java.awt.Color;
@@ -39,49 +40,71 @@ public class ImageMessage {
 
     private String[] lines;
 
-    public ImageMessage(BufferedImage image, int height, String imgChar) throws TooWideException {
-        ChatColor[][] chatColors = toChatColorArray(image, height);
-        lines = toImgMessage(chatColors, imgChar);
+    public ImageMessage(BufferedImage image, int width) throws TooWideException {
+        ChatColor[][] chatColors = toChatColorArray(image, width);
+        lines = toImgMessage(chatColors);
     }
 
-    private ChatColor[][] toChatColorArray(BufferedImage image, int height) throws TooWideException {
+    private ChatColor[][] toChatColorArray(BufferedImage image, int width) throws TooWideException {
         double ratio = (double) image.getHeight() / image.getWidth();
-        int width = (int) (height / ratio);
+        int height = (int) (((double)width) * ratio);
+        if (height == 0) {
+        	height = 1;
+        }
         
         if (width > MAX_WIDTH) {
         	throw new TooWideException(width);
         }
 
-        BufferedImage resized = resizeImage(image, (int) width, height);
+        BufferedImage resized = resizeImage(image, width, height);
         
         ChatColor[][] chatImg = new ChatColor[resized.getWidth()][resized.getHeight()];
         for (int x = 0; x < resized.getWidth(); x++) {
             for (int y = 0; y < resized.getHeight(); y++) {
                 int rgb = resized.getRGB(x, y);
-                ChatColor closest = getClosestChatColor(new Color(rgb, true));
-                chatImg[x][y] = closest;
+                chatImg[x][y] = getClosestChatColor(new Color(rgb, true));
             }
         }
         return chatImg;
     }
 
-    private String[] toImgMessage(ChatColor[][] colors, String imgchar) {
+    private String[] toImgMessage(ChatColor[][] colors) {
     	
         String[] lines = new String[colors[0].length];
+        ChatColor transparencyColor = HolographicDisplays.getTransparencyColor();
+        String transparencySymbol = HolographicDisplays.getTransparencySymbol();
+        String imageSymbol = HolographicDisplays.getImageSymbol();
         
         for (int y = 0; y < colors[0].length; y++) {
         	
-            StringBuffer line = new StringBuffer("");
-            ChatColor previous = null;
+            StringBuffer line = new StringBuffer();
+            
+            ChatColor previous = ChatColor.RESET;
             
             for (int x = 0; x < colors.length; x++) {
             	
-                ChatColor color = colors[x][y];
+                ChatColor currentColor = colors[x][y];
                 
-                if (previous != null && previous == color) {
-                	 line.append(imgchar);
+                if (currentColor == null) {
+                	
+                	// Use the trasparent char
+                	if (previous != transparencyColor) {
+                		
+                		// Change the previous chat color and append the newer
+                		line.append(transparencyColor);
+                		previous = transparencyColor;
+                		
+                	}
+                	line.append(transparencySymbol);
+                	
                 } else {
-                	 line.append(color.toString()).append(imgchar);
+                	
+                	if (previous != currentColor) {
+                		line.append(currentColor.toString());
+                		previous = currentColor;
+                	}
+                	
+                	line.append(imageSymbol);
                 }
             }
             
@@ -128,7 +151,7 @@ public class ImageMessage {
     }
 
     private ChatColor getClosestChatColor(Color color) {
-        if (color.getAlpha() < 64) return ChatColor.BLACK;
+    	if (color.getAlpha() < 80) return null;
 
         int index = 0;
         double best = -1;

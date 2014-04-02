@@ -9,6 +9,7 @@ import org.bukkit.World;
 
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.api.Hologram;
+import com.gmail.filoghost.holograms.exception.HologramDeletedException;
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.nms.GenericEntityHologramHorse;
 import com.gmail.filoghost.holograms.nms.GenericEntityHologramWitherSkull;
@@ -51,6 +52,14 @@ public class CraftHologram extends Hologram {
 	}
 	
 	public void setLocation(Location source) {
+		
+		if (source == null) {
+			throw new NullPointerException("Source location of the hologram cannot be null");
+		}
+		if (source.getWorld() == null) {
+			throw new NullPointerException("World of the source location of the hologram cannot be null");
+		}
+		
 		bukkitWorld = source.getWorld();
 		x = source.getX();
 		y = source.getY();
@@ -78,6 +87,18 @@ public class CraftHologram extends Hologram {
 	public int getBlockZ() {
 		return (int) z;
 	}
+	
+	public double getX() {
+		return x;
+	}
+	
+	public double getY() {
+		return x;
+	}
+	
+	public double getZ() {
+		return x;
+	}
 
 	public int getChunkX() {
 		return chunkX;
@@ -93,6 +114,10 @@ public class CraftHologram extends Hologram {
 	
 	public boolean isInLoadedChunk() {
 		return bukkitWorld.isChunkLoaded(chunkX, chunkZ);
+	}
+	
+	public World getWorld() {
+		return bukkitWorld;
 	}
 	
 	public String getWorldName() {
@@ -163,6 +188,10 @@ public class CraftHologram extends Hologram {
 	 *  Updates the hologram without checking for a loaded chunk.
 	 */
 	public boolean forceUpdate() {
+		
+		if (deleted) {
+			throw new HologramDeletedException("Hologram already deleted!");
+		}
 		
 		// Remove previous entities.
 		hide();
