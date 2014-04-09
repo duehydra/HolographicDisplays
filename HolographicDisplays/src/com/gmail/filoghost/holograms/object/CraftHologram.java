@@ -11,8 +11,8 @@ import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.api.Hologram;
 import com.gmail.filoghost.holograms.exception.HologramDeletedException;
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramHorse;
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramWitherSkull;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
 
 /**
  * This class is only used by the plugin itself. Other plugins should just use the API.
@@ -20,10 +20,10 @@ import com.gmail.filoghost.holograms.nms.GenericEntityHologramWitherSkull;
 
 public class CraftHologram extends Hologram {
 
-	private static final double VERTICAL_OFFSET = 54.4;
+	private static double VERTICAL_OFFSET = 54.313;
 	
-	private List<GenericEntityHologramHorse> horses;
-	private List<GenericEntityHologramWitherSkull> witherSkulls;
+	private List<HologramHorse> horses;
+	private List<HologramWitherSkull> witherSkulls;
 	
 	private List<String> lines;	
 	private int customNameLimit;
@@ -46,8 +46,8 @@ public class CraftHologram extends Hologram {
 		chunkX = source.getChunk().getX();
 		chunkZ = source.getChunk().getZ();
 		lines = new ArrayList<String>();
-		horses = new ArrayList<GenericEntityHologramHorse>();
-		witherSkulls = new ArrayList<GenericEntityHologramWitherSkull>();
+		horses = new ArrayList<HologramHorse>();
+		witherSkulls = new ArrayList<HologramWitherSkull>();
 		customNameLimit = HolographicDisplays.getNmsManager().getCustomNameLimit();
 	}
 	
@@ -93,11 +93,11 @@ public class CraftHologram extends Hologram {
 	}
 	
 	public double getY() {
-		return x;
+		return y;
 	}
 	
 	public double getZ() {
-		return x;
+		return z;
 	}
 
 	public int getChunkX() {
@@ -148,8 +148,8 @@ public class CraftHologram extends Hologram {
 		lines.add(index, message);
 	}
 
-	public List<String> getLines() {
-		return new ArrayList<String>(lines);
+	public String[] getLines() {
+		return lines.toArray(new String[lines.size()]);
 	}
 	
 	public void setLine(int index, String text) {
@@ -202,13 +202,14 @@ public class CraftHologram extends Hologram {
 			
 			for (int i = 0; i < lines.size(); i++) {
 				String line = lines.get(i);
-				if (line == null || line.length() == 0) continue;
-				GenericEntityHologramHorse horse = HolographicDisplays.getNmsManager().spawnHologramHorse(bukkitWorld, x, y + VERTICAL_OFFSET - (i*lineSpacing), z, this);
+				HologramHorse horse = HolographicDisplays.getNmsManager().spawnHologramHorse(bukkitWorld, x, y + VERTICAL_OFFSET - (i*lineSpacing), z, this);
 				horses.add(horse);
-				GenericEntityHologramWitherSkull witherSkull = HolographicDisplays.getNmsManager().spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET - (i*lineSpacing), z, this);
+				HologramWitherSkull witherSkull = HolographicDisplays.getNmsManager().spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET - (i*lineSpacing), z, this);
 				witherSkulls.add(witherSkull);
 				horse.rideSkull(witherSkull); // Let the horse ride the wither skull.
-				horse.forceSetCustomName(line); // Other plugins cannot change it.
+				if (line.length() > 0) {
+					horse.forceSetCustomName(line); // Other plugins cannot change it.
+				}
 				horse.setLockTick(true);
 				witherSkull.setLockTick(true);
 				
@@ -227,10 +228,10 @@ public class CraftHologram extends Hologram {
 
 
 	public void hide() {
-		for (GenericEntityHologramHorse horse : horses) {
+		for (HologramHorse horse : horses) {
 			horse.die();
 		}
-		for (GenericEntityHologramWitherSkull witherSkull : witherSkulls) {
+		for (HologramWitherSkull witherSkull : witherSkulls) {
 			witherSkull.die();
 		}
 	}

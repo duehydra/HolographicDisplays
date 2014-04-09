@@ -7,19 +7,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.filoghost.holograms.nms.GenericFancyMessage;
-import com.gmail.filoghost.holograms.nms.MessagePart;
+import com.gmail.filoghost.holograms.nms.interfaces.FancyMessage;
 
-public class FancyMessage implements GenericFancyMessage {
+public class FancyMessageImpl implements FancyMessage {
 	
 	private final List<MessagePart> messageParts;
 	
-	public FancyMessage(final String firstPartText) {
+	public FancyMessageImpl(final String firstPartText) {
 		messageParts = new ArrayList<MessagePart>();
 		messageParts.add(new MessagePart(firstPartText));
 	}
 	
-	public FancyMessage color(final ChatColor color) {
+	public FancyMessageImpl color(final ChatColor color) {
 		if (!color.isColor()) {
 			throw new IllegalArgumentException(color.name() + " is not a color");
 		}
@@ -27,7 +26,7 @@ public class FancyMessage implements GenericFancyMessage {
 		return this;
 	}
 	
-	public FancyMessage style(final ChatColor... styles) {
+	public FancyMessageImpl style(final ChatColor... styles) {
 		for (final ChatColor style : styles) {
 			if (!style.isFormat()) {
 				throw new IllegalArgumentException(style.name() + " is not a style");
@@ -37,39 +36,39 @@ public class FancyMessage implements GenericFancyMessage {
 		return this;
 	}
 	
-	public FancyMessage file(final String path) {
+	public FancyMessageImpl file(final String path) {
 		return this;
 	}
 	
-	public FancyMessage link(final String url) {
+	public FancyMessageImpl link(final String url) {
 		return this;
 	}
 	
-	public FancyMessage suggest(final String command) {
+	public FancyMessageImpl suggest(final String command) {
 		return this;
 	}
 	
-	public FancyMessage command(final String command) {
+	public FancyMessageImpl command(final String command) {
 		return this;
 	}
 	
-	public FancyMessage achievementTooltip(final String name) {
+	public FancyMessageImpl achievementTooltip(final String name) {
 		return this;
 	}
 	
-	public FancyMessage itemTooltip(final String itemJSON) {
+	public FancyMessageImpl itemTooltip(final String itemJSON) {
 		return this;
 	}
 	
-	public FancyMessage itemTooltip(final ItemStack itemStack) {
+	public FancyMessageImpl itemTooltip(final ItemStack itemStack) {
 		return this;
 	}
 	
-	public FancyMessage tooltip(final String text) {
+	public FancyMessageImpl tooltip(final String text) {
 		return this;
 	}
 
-	public FancyMessage then(final Object obj) {
+	public FancyMessageImpl then(final Object obj) {
 		messageParts.add(new MessagePart(obj.toString()));
 		return this;
 	}

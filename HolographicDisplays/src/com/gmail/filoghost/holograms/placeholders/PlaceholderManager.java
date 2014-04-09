@@ -7,7 +7,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 
 import com.gmail.filoghost.holograms.HolographicDisplays;
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramHorse;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 import com.gmail.filoghost.holograms.utils.EntityAndNamePair;
 
 public class PlaceholderManager {
@@ -30,7 +30,7 @@ public class PlaceholderManager {
 		startTask();
 	}
 	
-	public void trackIfNecessary(GenericEntityHologramHorse horse) {
+	public void trackIfNecessary(HologramHorse horse) {
 		
 		boolean containsAnyPlaceholder = false;
 		String customName = horse.getCustomName();
@@ -91,7 +91,7 @@ public class PlaceholderManager {
 		}, 4L, 4L);
 	}
 	
-	private void updatePlaceholders(GenericEntityHologramHorse horse, String newCustomName) {
+	private void updatePlaceholders(HologramHorse horse, String newCustomName) {
 		
 		String oldCustomName = horse.getCustomName();
 		

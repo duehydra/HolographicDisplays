@@ -1,18 +1,18 @@
 package com.gmail.filoghost.holograms.utils;
 
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramHorse;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 
 public class EntityAndNamePair {
 
-	private GenericEntityHologramHorse horse;
+	private HologramHorse horse;
 	private String originalName;
 	
-	public EntityAndNamePair(GenericEntityHologramHorse horse, String originalName) {
+	public EntityAndNamePair(HologramHorse horse, String originalName) {
 		this.horse = horse;
 		this.originalName = originalName;
 	}
 
-	public GenericEntityHologramHorse getHorse() {
+	public HologramHorse getHorse() {
 		return horse;
 	}
 

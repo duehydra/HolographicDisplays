@@ -1,17 +1,17 @@
-package com.gmail.filoghost.holograms.nms;
+package com.gmail.filoghost.holograms.nms.interfaces;
 
 import org.bukkit.Chunk;
 
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 
-public interface GenericNmsManager {
+public interface NmsManager {
 	
 	public void registerCustomEntities() throws Exception;
 	
-	public GenericEntityHologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, CraftHologram parent) throws SpawnFailedException;
+	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, CraftHologram parent) throws SpawnFailedException;
 	
-	public GenericEntityHologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, CraftHologram parent) throws SpawnFailedException;
+	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, CraftHologram parent) throws SpawnFailedException;
 
 	public void removeWitherSkulls(Chunk chunk);
 	
@@ -20,7 +20,7 @@ public interface GenericNmsManager {
 	// Return null if not a hologram's entity.
 	public CraftHologram getHologram(org.bukkit.entity.Entity bukkitEntity);
 	
-	public GenericFancyMessage newFancyMessage(String text);
+	public FancyMessage newFancyMessage(String text);
 	
 	public int getCustomNameLimit();
 	

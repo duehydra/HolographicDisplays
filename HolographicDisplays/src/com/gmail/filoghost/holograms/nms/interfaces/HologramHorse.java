@@ -1,8 +1,8 @@
-package com.gmail.filoghost.holograms.nms;
+package com.gmail.filoghost.holograms.nms.interfaces;
 
 import com.gmail.filoghost.holograms.object.CraftHologram;
 
-public interface GenericEntityHologramHorse {
+public interface HologramHorse {
 	
 	public void setLockTick(boolean lock);
 	
@@ -10,7 +10,7 @@ public interface GenericEntityHologramHorse {
 	
 	public CraftHologram getHologram();
 	
-	public void rideSkull(GenericEntityHologramWitherSkull skull);
+	public void rideSkull(HologramWitherSkull skull);
 	
 	public void die();
 	

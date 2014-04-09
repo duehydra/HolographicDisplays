@@ -3,7 +3,7 @@ package com.gmail.filoghost.holograms.placeholders;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramHorse;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 import com.gmail.filoghost.holograms.utils.EntityAndNamePair;
 
 public abstract class Placeholder {
@@ -25,7 +25,7 @@ public abstract class Placeholder {
 		this.longerRefreshTicks = refreshTicks;
 	}
 	
-	public void trackIfNecessary(GenericEntityHologramHorse horse) {
+	public void trackIfNecessary(HologramHorse horse) {
 		String customName = horse.getCustomName();
 		if (customName == null || customName.length() == 0) {
 			return;

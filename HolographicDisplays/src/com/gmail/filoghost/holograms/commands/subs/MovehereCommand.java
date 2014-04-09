@@ -44,9 +44,7 @@ public class MovehereCommand extends HologramSubCommand {
 		CraftHologram hologram = HologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Messages.NO_SUCH_HOLOGRAM);
 		
-		hologram.hide();
-		hologram.setLocation(player.getLocation());
-		
+		hologram.setLocation(player.getLocation());		
 		if (!hologram.update()) {
 			player.sendMessage(Messages.FAILED_TO_SPAWN_HERE);
 		}

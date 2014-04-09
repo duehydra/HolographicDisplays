@@ -7,6 +7,10 @@ import org.bukkit.Chunk;
 
 import com.gmail.filoghost.holograms.HolographicDisplays;
 
+/**
+ * This class is only used by the plugin itself. Other plugins should just use the API.
+ */
+
 public class HologramManager {
 
 	private static List<CraftHologram> pluginHolograms = new ArrayList<CraftHologram>();

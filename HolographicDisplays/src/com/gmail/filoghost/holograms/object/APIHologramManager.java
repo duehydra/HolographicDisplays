@@ -10,6 +10,10 @@ import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holograms.api.Hologram;
 
+/**
+ * This class is only used by the plugin itself. Other plugins should just use the API.
+ */
+
 public class APIHologramManager {
 
 	private static Map<Plugin, List<CraftHologram>> apiHolograms = new HashMap<Plugin, List<CraftHologram>>();

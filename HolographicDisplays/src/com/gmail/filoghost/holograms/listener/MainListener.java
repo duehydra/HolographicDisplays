@@ -9,16 +9,16 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
-import com.gmail.filoghost.holograms.nms.GenericNmsManager;
+import com.gmail.filoghost.holograms.nms.interfaces.NmsManager;
 import com.gmail.filoghost.holograms.object.APIHologramManager;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
 
 public class MainListener implements Listener {
 	
-	private GenericNmsManager nmsManager;
+	private NmsManager nmsManager;
 	
-	public MainListener(GenericNmsManager nmsManager) {
+	public MainListener(NmsManager nmsManager) {
 		this.nmsManager = nmsManager;
 	}
 	

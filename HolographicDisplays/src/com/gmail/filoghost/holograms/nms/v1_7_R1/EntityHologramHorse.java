@@ -2,8 +2,8 @@ package com.gmail.filoghost.holograms.nms.v1_7_R1;
 
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
 
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramHorse;
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramWitherSkull;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramComponent;
 
@@ -11,7 +11,7 @@ import net.minecraft.server.v1_7_R1.EntityHorse;
 import net.minecraft.server.v1_7_R1.NBTTagCompound;
 import net.minecraft.server.v1_7_R1.World;
 
-public class EntityHologramHorse extends EntityHorse implements HologramComponent, GenericEntityHologramHorse {
+public class EntityHologramHorse extends EntityHorse implements HologramComponent, HologramHorse {
 
 	private boolean lockTick;
 	private CraftHologram parent;
@@ -124,7 +124,7 @@ public class EntityHologramHorse extends EntityHorse implements HologramComponen
 	}
 
 	@Override
-	public void rideSkull(GenericEntityHologramWitherSkull skull) {
+	public void rideSkull(HologramWitherSkull skull) {
 		this.setPassengerOf((EntityHologramWitherSkull) skull);		
 	}
 

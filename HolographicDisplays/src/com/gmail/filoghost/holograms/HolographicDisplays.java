@@ -16,7 +16,7 @@ import com.gmail.filoghost.holograms.exception.InvalidLocationException;
 import com.gmail.filoghost.holograms.exception.WorldNotFoundException;
 import com.gmail.filoghost.holograms.listener.MainListener;
 import com.gmail.filoghost.holograms.metrics.MetricsLite;
-import com.gmail.filoghost.holograms.nms.GenericNmsManager;
+import com.gmail.filoghost.holograms.nms.interfaces.NmsManager;
 import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
@@ -36,7 +36,7 @@ public class HolographicDisplays extends JavaPlugin {
 
 	private static ChatColor transparencyColor;
 	
-	private static GenericNmsManager nmsManager;
+	private static NmsManager nmsManager;
 	private CommandHandler commandHandler;
 	private static PlaceholderManager placeholderManager;
 	
@@ -50,11 +50,11 @@ public class HolographicDisplays extends JavaPlugin {
 		
 		// It's simple, we don't need reflection.
 		if (version.equals("v1_6_R3")) {
-			nmsManager = new com.gmail.filoghost.holograms.nms.v1_6_R3.NmsManager();
+			nmsManager = new com.gmail.filoghost.holograms.nms.v1_6_R3.NmsManagerImpl();
 		} else if (version.equals("v1_7_R1")) {
-			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R1.NmsManager();
+			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R1.NmsManagerImpl();
 		} else if (version.equals("v1_7_R2")) {
-			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R2.NmsManager();
+			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R2.NmsManagerImpl();
 		} else {
 			System.out.println(
 					 " \n "
@@ -199,7 +199,7 @@ public class HolographicDisplays extends JavaPlugin {
 		return instance;
 	}
 	
-	public static GenericNmsManager getNmsManager() {
+	public static NmsManager getNmsManager() {
 		return nmsManager;
 	}
 

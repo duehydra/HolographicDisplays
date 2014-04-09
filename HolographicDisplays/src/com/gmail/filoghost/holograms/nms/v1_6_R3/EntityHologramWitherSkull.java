@@ -2,7 +2,7 @@ package com.gmail.filoghost.holograms.nms.v1_6_R3;
 
 import org.bukkit.craftbukkit.v1_6_R3.entity.CraftEntity;
 
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramWitherSkull;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramComponent;
 
@@ -10,7 +10,7 @@ import net.minecraft.server.v1_6_R3.EntityWitherSkull;
 import net.minecraft.server.v1_6_R3.NBTTagCompound;
 import net.minecraft.server.v1_6_R3.World;
 
-public class EntityHologramWitherSkull extends EntityWitherSkull implements HologramComponent, GenericEntityHologramWitherSkull {
+public class EntityHologramWitherSkull extends EntityWitherSkull implements HologramComponent, HologramWitherSkull {
 
 	private boolean lockTick;
 	private CraftHologram parent;

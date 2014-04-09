@@ -1,25 +1,25 @@
-package com.gmail.filoghost.holograms.nms.v1_6_R3;
+package com.gmail.filoghost.holograms.nms.v1_7_R1;
 
 import org.bukkit.Chunk;
-import org.bukkit.craftbukkit.v1_6_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_6_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramHorse;
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramWitherSkull;
-import com.gmail.filoghost.holograms.nms.GenericFancyMessage;
-import com.gmail.filoghost.holograms.nms.GenericNmsManager;
+import com.gmail.filoghost.holograms.nms.interfaces.FancyMessage;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
+import com.gmail.filoghost.holograms.nms.interfaces.NmsManager;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramComponent;
 import com.gmail.filoghost.holograms.utils.ReflectionUtils;
 
-import net.minecraft.server.v1_6_R3.Entity;
-import net.minecraft.server.v1_6_R3.EntityTypes;
-import net.minecraft.server.v1_6_R3.EntityWitherSkull;
-import net.minecraft.server.v1_6_R3.WorldServer;
+import net.minecraft.server.v1_7_R1.EntityTypes;
+import net.minecraft.server.v1_7_R1.EntityWitherSkull;
+import net.minecraft.server.v1_7_R1.WorldServer;
+import net.minecraft.server.v1_7_R1.Entity;
 
-public class NmsManager implements GenericNmsManager {
+public class NmsManagerImpl implements NmsManager {
 
 	@Override
 	public void registerCustomEntities() throws Exception {
@@ -29,12 +29,12 @@ public class NmsManager implements GenericNmsManager {
 	
 	@SuppressWarnings("rawtypes")
 	public void registerCustomEntity(Class entityClass, String name, int id) throws Exception {
-		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "c", entityClass, name);
-		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "e", entityClass, Integer.valueOf(id));
+		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "d", entityClass, name);
+		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "f", entityClass, Integer.valueOf(id));
 	}
 	
 	@Override
-	public GenericEntityHologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
+	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) world).getHandle();
 		EntityHologramHorse invisibleHorse = new EntityHologramHorse(nmsWorld, parent);
 		invisibleHorse.setLocation(x, y, z, 0.0F, 0.0F);
@@ -45,7 +45,7 @@ public class NmsManager implements GenericNmsManager {
 	}
 	
 	@Override
-	public GenericEntityHologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
+	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
 		EntityHologramWitherSkull staticWitherSkull = new EntityHologramWitherSkull(nmsWorld, parent);
 		staticWitherSkull.setLocation(x, y, z, 0.0F, 0.0F);
@@ -55,9 +55,8 @@ public class NmsManager implements GenericNmsManager {
 		return staticWitherSkull;
 	}
 	
-
 	public void removeWitherSkulls(Chunk chunk) {
-		net.minecraft.server.v1_6_R3.Entity nmsEntity;
+		net.minecraft.server.v1_7_R1.Entity nmsEntity;
 		
 		// Remove all the WitherSkulls.
 		for (org.bukkit.entity.Entity entity : chunk.getEntities()) {		
@@ -73,7 +72,7 @@ public class NmsManager implements GenericNmsManager {
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean isHologramEntity(org.bukkit.entity.Entity bukkitEntity) {
 		return ((CraftEntity) bukkitEntity).getHandle() instanceof HologramComponent;
@@ -89,20 +88,20 @@ public class NmsManager implements GenericNmsManager {
 
 		return null;
 	}
-
+	
 	@Override
-	public GenericFancyMessage newFancyMessage(String text) {
-		return new FancyMessage(text);
+	public FancyMessage newFancyMessage(String text) {
+		return new FancyMessageImpl(text);
 	}
-
+	
 	@Override
 	public int getCustomNameLimit() {
-		return 64;
+		return 300;
 	}
 
 	@Override
 	public boolean hasChatHoverFeature() {
-		return false;
+		return true;
 	}
 	
 }

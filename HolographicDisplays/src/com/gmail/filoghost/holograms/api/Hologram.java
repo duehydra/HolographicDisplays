@@ -1,15 +1,12 @@
 package com.gmail.filoghost.holograms.api;
 
-import java.util.List;
-
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 import com.gmail.filoghost.holograms.object.APIHologramManager;
 
 public abstract class Hologram {
-
+	
 	protected boolean deleted;
 	
 	/**
@@ -45,7 +42,7 @@ public abstract class Hologram {
 	/**
 	 * @return a copy of the lines.
 	 */
-	public abstract List<String> getLines();
+	public abstract String[] getLines();
 	
 	/**
 	 * @return the amount of lines of this hologram.
@@ -56,11 +53,6 @@ public abstract class Hologram {
 	 * Remove all the lines from the hologram.
 	 */
 	public abstract void clearLines();
-	
-	/**
-	 * @return true if the hologram is in the given chunk. This is used by HolographicDisplays to handle chunks loading.
-	 */
-	public abstract boolean isInChunk(Chunk chunk);
 	
 	/**
 	 * @return the X coordinate of this hologram. 
@@ -84,7 +76,9 @@ public abstract class Hologram {
 	
 	/**
 	 * Change the location of this hologram. You have to call update() after this method.
+	 * @deprecated This method required to call update() and creates new entities. Use teleport(Location) instead, the movement will also be smoother. It's useful if you want to change the world.
 	 */
+	@Deprecated
 	public abstract void setLocation(Location location);
 	
 	/**
@@ -93,6 +87,13 @@ public abstract class Hologram {
 	public void delete() {
 		deleted = true;
 		APIHologramManager.remove(this);
+	}
+	
+	/**
+	 * @return true if this hologram was deleted. Calling update() on a deleted hologram will throw an exception.
+	 */
+	public boolean isDeleted() {
+		return deleted;
 	}
 	
 }

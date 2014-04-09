@@ -6,10 +6,10 @@ import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramHorse;
-import com.gmail.filoghost.holograms.nms.GenericEntityHologramWitherSkull;
-import com.gmail.filoghost.holograms.nms.GenericFancyMessage;
-import com.gmail.filoghost.holograms.nms.GenericNmsManager;
+import com.gmail.filoghost.holograms.nms.interfaces.FancyMessage;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
+import com.gmail.filoghost.holograms.nms.interfaces.NmsManager;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramComponent;
 import com.gmail.filoghost.holograms.utils.ReflectionUtils;
@@ -19,7 +19,7 @@ import net.minecraft.server.v1_7_R2.EntityTypes;
 import net.minecraft.server.v1_7_R2.EntityWitherSkull;
 import net.minecraft.server.v1_7_R2.WorldServer;
 
-public class NmsManager implements GenericNmsManager {
+public class NmsManagerImpl implements NmsManager {
 
 	@Override
 	public void registerCustomEntities() throws Exception {
@@ -34,7 +34,7 @@ public class NmsManager implements GenericNmsManager {
 	}
 	
 	@Override
-	public GenericEntityHologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
+	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) world).getHandle();
 		EntityHologramHorse invisibleHorse = new EntityHologramHorse(nmsWorld, parent);
 		invisibleHorse.setLocation(x, y, z, 0.0F, 0.0F);
@@ -45,7 +45,7 @@ public class NmsManager implements GenericNmsManager {
 	}
 	
 	@Override
-	public GenericEntityHologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
+	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
 		EntityHologramWitherSkull staticWitherSkull = new EntityHologramWitherSkull(nmsWorld, parent);
 		staticWitherSkull.setLocation(x, y, z, 0.0F, 0.0F);
@@ -91,8 +91,8 @@ public class NmsManager implements GenericNmsManager {
 	}
 
 	@Override
-	public GenericFancyMessage newFancyMessage(String text) {
-		return new FancyMessage(text);
+	public FancyMessage newFancyMessage(String text) {
+		return new FancyMessageImpl(text);
 	}
 
 	@Override
