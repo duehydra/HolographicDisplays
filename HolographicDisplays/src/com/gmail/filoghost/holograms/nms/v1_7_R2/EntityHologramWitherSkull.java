@@ -1,6 +1,5 @@
 package com.gmail.filoghost.holograms.nms.v1_7_R2;
 
-import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
 
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
