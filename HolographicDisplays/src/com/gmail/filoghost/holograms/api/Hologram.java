@@ -76,9 +76,8 @@ public abstract class Hologram {
 	
 	/**
 	 * Change the location of this hologram. You have to call update() after this method.
-	 * @deprecated This method required to call update() and creates new entities. Use teleport(Location) instead, the movement will also be smoother. It's useful if you want to change the world.
+	 * Please note that this method will create new entities every time, so use it wisely.
 	 */
-	@Deprecated
 	public abstract void setLocation(Location location);
 	
 	/**

@@ -55,6 +55,8 @@ public class HolographicDisplays extends JavaPlugin {
 			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R1.NmsManagerImpl();
 		} else if (version.equals("v1_7_R2")) {
 			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R2.NmsManagerImpl();
+		} else if (version.equals("v1_7_R3")) {
+			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R3.NmsManagerImpl();
 		} else {
 			System.out.println(
 					 " \n "

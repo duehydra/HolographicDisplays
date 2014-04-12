@@ -5,7 +5,7 @@ public enum ConfigNode {
 
 	VERTICAL_SPACING("vertical-spacing", 0.25),
 	IMAGES_SYMBOL("images.symbol", "[x]"),
-	TRANSPARENCY_SPACE("images.transparency.space", "[..]"),
+	TRANSPARENCY_SPACE("images.transparency.space", " [|] "),
 	TRANSPARENCY_COLOR("images.transparency.color", "&8");
 	
 	private String path;

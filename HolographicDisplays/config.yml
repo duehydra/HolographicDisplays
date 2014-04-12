@@ -7,5 +7,5 @@ vertical-spacing: 0.25
 images:
   symbol: '[x]'
   transparency:
-    space: '[..]'
+    space: ' [|] '
     color: '&8'

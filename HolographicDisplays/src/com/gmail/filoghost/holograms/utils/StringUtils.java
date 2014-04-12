@@ -18,7 +18,7 @@ public class StringUtils {
 		placeholders.put("[..]", "\u2592"); // 50% opacity block
 		placeholders.put("[...]", "\u2593"); // 75% opacity block
 		placeholders.put("[p]", "\u2022"); // Black point
-		placeholders.put("[|]", "\u23B9");
+		placeholders.put("[|]", "\u23B9"); // Vertical bar
 		
 	}
 	
