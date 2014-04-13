@@ -132,5 +132,15 @@ public class EntityHologramHorse extends EntityHorse implements HologramComponen
 	public boolean isDead() {
 		return this.dead;
 	}
+	
+	@Override
+	public String getEntityCustomName() {
+		return super.getCustomName();
+	}
+	
+	@Override
+	public void killEntity() {
+		super.die();
+	}
 
 }

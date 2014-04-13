@@ -108,4 +108,9 @@ public class EntityHologramWitherSkull extends EntityWitherSkull implements Holo
 		return this.bukkitEntity;
 	}
 
+	@Override
+	public void killEntity() {
+		super.die();
+	}
+
 }

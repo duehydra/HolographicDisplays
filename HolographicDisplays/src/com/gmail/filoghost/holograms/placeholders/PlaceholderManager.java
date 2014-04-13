@@ -33,7 +33,7 @@ public class PlaceholderManager {
 	public void trackIfNecessary(HologramHorse horse) {
 		
 		boolean containsAnyPlaceholder = false;
-		String customName = horse.getCustomName();
+		String customName = horse.getEntityCustomName();
 		
 		if (customName == null || customName.length() == 0) {
 			return;
@@ -93,7 +93,7 @@ public class PlaceholderManager {
 	
 	private void updatePlaceholders(HologramHorse horse, String newCustomName) {
 		
-		String oldCustomName = horse.getCustomName();
+		String oldCustomName = horse.getEntityCustomName();
 		
 		for (Placeholder placeholder : registeredPlaceholders) {
 			newCustomName = newCustomName.replace(placeholder.getShortPlaceholder(), placeholder.getReplacement());

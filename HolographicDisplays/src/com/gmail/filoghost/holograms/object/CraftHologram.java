@@ -229,10 +229,10 @@ public class CraftHologram extends Hologram {
 
 	public void hide() {
 		for (HologramHorse horse : horses) {
-			horse.die();
+			horse.killEntity();
 		}
 		for (HologramWitherSkull witherSkull : witherSkulls) {
-			witherSkull.die();
+			witherSkull.killEntity();
 		}
 	}
 	

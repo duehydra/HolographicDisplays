@@ -26,7 +26,7 @@ public abstract class Placeholder {
 	}
 	
 	public void trackIfNecessary(HologramHorse horse) {
-		String customName = horse.getCustomName();
+		String customName = horse.getEntityCustomName();
 		if (customName == null || customName.length() == 0) {
 			return;
 		}

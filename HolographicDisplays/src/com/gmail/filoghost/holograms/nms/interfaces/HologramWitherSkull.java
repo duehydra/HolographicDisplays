@@ -8,6 +8,6 @@ public interface HologramWitherSkull {
 	
 	public CraftHologram getHologram();
 	
-	public void die();
+	public void killEntity();
 
 }

@@ -12,10 +12,10 @@ public interface HologramHorse {
 	
 	public void rideSkull(HologramWitherSkull skull);
 	
-	public void die();
+	public void killEntity();
 	
 	public boolean isDead();
 	
-	public String getCustomName();
+	public String getEntityCustomName();
 	
 }

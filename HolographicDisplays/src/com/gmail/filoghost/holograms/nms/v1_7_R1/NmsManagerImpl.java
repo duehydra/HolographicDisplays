@@ -104,4 +104,14 @@ public class NmsManagerImpl implements NmsManager {
 		return true;
 	}
 	
+	@Override
+	public Class<?> getHologramHorseClass() {
+		return EntityHologramHorse.class;
+	}
+
+	@Override
+	public Class<?> getHologramWitherSkullClass() {
+		return EntityHologramWitherSkull.class;
+	}
+	
 }

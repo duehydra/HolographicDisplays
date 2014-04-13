@@ -60,6 +60,13 @@ public class ReadtextCommand extends HologramSubCommand {
 
 			Database.saveHologram(hologram);
 			Database.trySaveToDisk();
+			
+			if (args[1].contains(".")) {
+				if (isImageExtension(args[1].substring(args[1].lastIndexOf('.') + 1))) {
+					sender.sendMessage("§eSeems that the file read was an image. If so, you should use /hd readimage.");
+				}
+			}
+			
 			sender.sendMessage(Format.HIGHLIGHT + "The lines were pasted into the hologram!");
 			
 		} catch (FileNotFoundException e) {
@@ -90,4 +97,14 @@ public class ReadtextCommand extends HologramSubCommand {
 		return SubCommandType.EDIT_LINES;
 	}
 
+	private boolean isImageExtension(String input) {
+		String[] imageExtensions = new String[]{"jpg", "png", "jpeg", "gif"};
+		for (String ext : imageExtensions) {
+			if (input.equalsIgnoreCase(ext)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

@@ -25,4 +25,8 @@ public interface NmsManager {
 	public int getCustomNameLimit();
 	
 	public boolean hasChatHoverFeature();
+	
+	// Used for MCPC.
+	public Class<?> getHologramHorseClass();
+	public Class<?> getHologramWitherSkullClass();
 }

@@ -104,5 +104,15 @@ public class NmsManagerImpl implements NmsManager {
 	public boolean hasChatHoverFeature() {
 		return false;
 	}
+
+	@Override
+	public Class<?> getHologramHorseClass() {
+		return EntityHologramHorse.class;
+	}
+
+	@Override
+	public Class<?> getHologramWitherSkullClass() {
+		return EntityHologramWitherSkull.class;
+	}
 	
 }

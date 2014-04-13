@@ -31,7 +31,7 @@ public class ReadimageCommand extends HologramSubCommand {
 
 	@Override
 	public String getPossibleArguments() {
-		return "<hologram> <file> <width>";
+		return "<hologram> <imageWithExtension> <width>";
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ReadimageCommand extends HologramSubCommand {
 		
 		int width = CommandValidator.getInteger(args[2]);
 		
-		CommandValidator.isTrue(width >= 5, "The width of the image must be 5 or greater.");
+		CommandValidator.isTrue(width >= 3, "The width of the image must be 3 or greater.");
 
 		try {
 			
