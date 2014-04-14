@@ -16,6 +16,7 @@ import com.gmail.filoghost.holograms.exception.WorldNotFoundException;
 import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
+import com.gmail.filoghost.holograms.placeholders.StaticPlaceholders;
 
 public class ReloadCommand extends HologramSubCommand {
 
@@ -42,6 +43,8 @@ public class ReloadCommand extends HologramSubCommand {
 			
 			HolographicDisplays.getInstance().reloadConfig();
 			HolographicDisplays.getInstance().loadConfiguration();
+			
+			StaticPlaceholders.load();
 			
 			Database.initialize();
 			HologramManager.clearAll();

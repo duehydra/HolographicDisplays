@@ -26,6 +26,7 @@ import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
 import com.gmail.filoghost.holograms.placeholders.PlaceholderManager;
+import com.gmail.filoghost.holograms.placeholders.StaticPlaceholders;
 import com.gmail.filoghost.holograms.utils.StringUtils;
 import com.gmail.filoghost.holograms.utils.VersionUtils;
 import com.gmail.filoghost.holograms.utils.ConfigNode;
@@ -89,6 +90,13 @@ public class HolographicDisplays extends JavaPlugin {
 					}
 				}
 			});
+		}
+		
+		try {
+			StaticPlaceholders.load();
+		} catch (Exception e) {
+			e.printStackTrace();
+			getLogger().severe("Unable to read placeholders.yml! Is the file in use?");
 		}
 		
 		String version = VersionUtils.getBukkitVersion();
