@@ -142,4 +142,9 @@ public class EntityHologramHorse extends EntityHorse implements HologramComponen
 	public void killEntity() {
 		super.die();
 	}
+	
+	@Override
+	public void setNMSLocation(double x, double y, double z) {
+		super.setPosition(x, y, z);
+	}
 }

@@ -48,8 +48,8 @@ public class StaticPlaceholders {
 				continue;
 			}
 			
-			if (placeholder.length() > 10) {
-				HolographicDisplays.getInstance().getLogger().warning("Unable to parse a line(" + line + ") from placeholders.yml: the placeholder cannot be longer than 10 characters.");
+			if (placeholder.length() > 20) {
+				HolographicDisplays.getInstance().getLogger().warning("Unable to parse a line(" + line + ") from placeholders.yml: the placeholder cannot be longer than 20 characters.");
 				continue;
 			}
 			

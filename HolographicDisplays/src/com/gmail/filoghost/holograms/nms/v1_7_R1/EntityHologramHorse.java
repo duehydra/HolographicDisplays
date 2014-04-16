@@ -39,9 +39,9 @@ public class EntityHologramHorse extends EntityHorse implements HologramComponen
 	@Override
 	public void h() {
 		// Checks every 20 ticks.
-		if (ticksLived % 20 == 0) {
+		if (super.ticksLived % 20 == 0) {
 			// The horse dies without a vehicle.
-			if (this.vehicle == null) {
+			if (super.vehicle == null) {
 				die();
 			}
 		}
@@ -118,14 +118,14 @@ public class EntityHologramHorse extends EntityHorse implements HologramComponen
 	
 	public CraftEntity getBukkitEntity() {
 		if (super.bukkitEntity == null) {
-			this.bukkitEntity = new CraftHologramHorse(this.world.getServer(), this);
+			super.bukkitEntity = new CraftHologramHorse(this.world.getServer(), this);
 	    }
-		return this.bukkitEntity;
+		return super.bukkitEntity;
 	}
 
 	@Override
 	public void rideSkull(HologramWitherSkull skull) {
-		this.setPassengerOf((EntityHologramWitherSkull) skull);		
+		super.setPassengerOf((EntityHologramWitherSkull) skull);		
 	}
 
 	@Override
@@ -141,6 +141,11 @@ public class EntityHologramHorse extends EntityHorse implements HologramComponen
 	@Override
 	public void killEntity() {
 		super.die();
+	}
+
+	@Override
+	public void setNMSLocation(double x, double y, double z) {
+		super.setPosition(x, y, z);
 	}
 
 }

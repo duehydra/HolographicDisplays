@@ -37,7 +37,7 @@ public class NmsManagerImpl implements NmsManager {
 	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) world).getHandle();
 		EntityHologramHorse invisibleHorse = new EntityHologramHorse(nmsWorld, parent);
-		invisibleHorse.setLocation(x, y, z, 0.0F, 0.0F);
+		invisibleHorse.setNMSLocation(x, y, z);
 		if (!nmsWorld.addEntity(invisibleHorse, SpawnReason.CUSTOM)) {
 			throw new SpawnFailedException();
 		}
@@ -48,29 +48,11 @@ public class NmsManagerImpl implements NmsManager {
 	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, CraftHologram parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
 		EntityHologramWitherSkull staticWitherSkull = new EntityHologramWitherSkull(nmsWorld, parent);
-		staticWitherSkull.setLocation(x, y, z, 0.0F, 0.0F);
+		staticWitherSkull.setNMSLocation(x, y, z);
 		if (!nmsWorld.addEntity(staticWitherSkull, SpawnReason.CUSTOM)) {
 			throw new SpawnFailedException();
 		}
 		return staticWitherSkull;
-	}
-	
-	public void removeWitherSkulls(Chunk chunk) {
-		net.minecraft.server.v1_7_R1.Entity nmsEntity;
-		
-		// Remove all the WitherSkulls.
-		for (org.bukkit.entity.Entity entity : chunk.getEntities()) {		
-			if (!entity.isDead()) {
-				nmsEntity = ((CraftEntity) entity).getHandle();
-				if (nmsEntity instanceof EntityWitherSkull) {
-					EntityWitherSkull skull = (EntityWitherSkull) nmsEntity;
-					if (skull.passenger != null) {
-						skull.passenger.die();
-					}
-					skull.die();
-				}
-			}
-		}
 	}
 	
 	@Override

@@ -18,4 +18,6 @@ public interface HologramHorse {
 	
 	public String getEntityCustomName();
 	
+	public void setNMSLocation(double x, double y, double z);
+	
 }

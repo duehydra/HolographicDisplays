@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.bukkit.Chunk;
 
-import com.gmail.filoghost.holograms.HolographicDisplays;
-
 /**
  * This class is only used by the plugin itself. Other plugins should just use the API.
  */
@@ -36,11 +34,8 @@ public class HologramManager {
 		return (getHologram(name) != null);
 	}
 
-	public static void onChunkLoad(Chunk chunk) {
-		// Fix for server errors.
-		HolographicDisplays.getNmsManager().removeWitherSkulls(chunk);
-		
-		 // Then load the holograms.
+	public static void onChunkLoad(Chunk chunk) {		
+		 // Load the holograms in that chunk.
 		for (CraftHologram hologram : pluginHolograms) {
 			if (hologram.isInChunk(chunk)) {
 				hologram.forceUpdate();

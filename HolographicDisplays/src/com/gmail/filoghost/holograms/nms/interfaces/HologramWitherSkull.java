@@ -9,5 +9,7 @@ public interface HologramWitherSkull {
 	public CraftHologram getHologram();
 	
 	public void killEntity();
+	
+	public void setNMSLocation(double x, double y, double z);
 
 }

@@ -6,8 +6,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gmail.filoghost.holograms.SimpleUpdater.FailCause;
@@ -219,15 +217,7 @@ public class HolographicDisplays extends JavaPlugin {
 		// The entities are loaded when the server is ready.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 			public void run() {
-				
-				// Temp fix.				
-				for (World world : Bukkit.getWorlds()) {
-					for (Chunk chunk : world.getLoadedChunks()) {
-						nmsManager.removeWitherSkulls(chunk);
-					}
-				}
-				
-				
+
 				for (CraftHologram hologram : HologramManager.getHolograms()) {
 					if (!hologram.update()) {
 						logger.warning("Unable to spawn entities for the hologram '" + hologram.getName() + "'.");

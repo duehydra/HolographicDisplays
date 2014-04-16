@@ -15,10 +15,10 @@ public class StringUtils {
 		return input;
 	}
 	
+	
 	public static String toSaveableFormat(String input) {
 		if (input == null || input.length() == 0) return input;
-		
-		input = StaticPlaceholders.symbolsToPlaceholders(input);
+
 		input = input.replace("§", "&");
 		return input;
 	}

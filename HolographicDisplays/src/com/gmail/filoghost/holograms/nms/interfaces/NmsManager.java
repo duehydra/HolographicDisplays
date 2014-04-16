@@ -1,7 +1,5 @@
 package com.gmail.filoghost.holograms.nms.interfaces;
 
-import org.bukkit.Chunk;
-
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 
@@ -12,8 +10,6 @@ public interface NmsManager {
 	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, CraftHologram parent) throws SpawnFailedException;
 	
 	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, CraftHologram parent) throws SpawnFailedException;
-
-	public void removeWitherSkulls(Chunk chunk);
 	
 	public boolean isHologramEntity(org.bukkit.entity.Entity bukkitEntity);
 	
