@@ -3,28 +3,26 @@ package com.gmail.filoghost.holograms.placeholders;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 
 import com.gmail.filoghost.holograms.HolographicDisplays;
+import com.gmail.filoghost.holograms.bungee.ServerInfoTimer;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
-import com.gmail.filoghost.holograms.utils.EntityAndNamePair;
+import com.gmail.filoghost.holograms.utils.HologramLineData;
 
 public class PlaceholderManager {
 	
-	private static Placeholder[] registeredPlaceholders;
-	private static int taskId = -1;
-	private static List<EntityAndNamePair> horsesToRefresh;
+	private static int taskID = -1;
+	private static List<HologramLineData> horsesToRefresh;
 	private static long elapsedLongTicks;
 	
+	private static final Pattern BUNGEE_PATTERN = Pattern.compile("(\\{bungee:|\\{online:|\\{server:)(.+)(\\})");
+	
 	public PlaceholderManager() {
-		horsesToRefresh = new ArrayList<EntityAndNamePair>();
-		
-		registeredPlaceholders = new Placeholder[] {
-			new RainbowText(),
-			new OnlinePlayers(),
-			new MaxPlayers()
-		};
+		horsesToRefresh = new ArrayList<HologramLineData>();
 		
 		// Start the repeating tasks.
 		startTask();
@@ -32,77 +30,130 @@ public class PlaceholderManager {
 	
 	public void trackIfNecessary(HologramHorse horse) {
 		
-		boolean containsAnyPlaceholder = false;
 		String customName = horse.getEntityCustomName();
-		
 		if (customName == null || customName.length() == 0) {
 			return;
 		}
-		
-		for (Placeholder placeholder : registeredPlaceholders) {			
-			if (customName.contains(placeholder.getLongPlaceholder())) {
-				containsAnyPlaceholder = true;
-				// Optimize calculations with shorter placeholders.
-				customName = customName.replace(placeholder.getLongPlaceholder(), placeholder.getShortPlaceholder());
-			}
+
+		if (!(customName.contains("{") && customName.contains("}")) && !customName.contains("&u")) {
+			// All the placeholders have curly brackets or &u, optimization.
+			return;
 		}
 		
-		if (containsAnyPlaceholder) {
-			horsesToRefresh.add(new EntityAndNamePair(horse, customName));
-			updatePlaceholders(horse, customName);
+		// Don't create a list if not necessary.
+		List<Placeholder> containedPlaceholders = null;
+		List<String> bungeeServers = null;
+		
+		for (Placeholder placeholder : Placeholder.values()) {
 			
+			if (customName.contains(placeholder.getLongPlaceholder())) {
+				
+				if (containedPlaceholders == null) {
+					// Now we create a list, because at least one placeholder has been found.
+					containedPlaceholders = new ArrayList<Placeholder>();
+				}
+				
+				// Optimize calculations with shorter placeholders.
+				customName = customName.replace(placeholder.getLongPlaceholder(), placeholder.getShortPlaceholder());
+				
+				// Add the placeholder to the list.
+				containedPlaceholders.add(placeholder);
+			}
+			
+		}
+		
+		// BungeeCord pattern.
+		Matcher matcher = BUNGEE_PATTERN.matcher(customName);
+		while (matcher.find()) {
+			
+			if (bungeeServers == null) {
+				bungeeServers = new ArrayList<String>();
+			}
+			
+			String serverName = matcher.group(2).replace(" ", "");
+			ServerInfoTimer.track(serverName); // Track this server.
+			
+			// Shorter placeholder without spaces.
+			customName = customName.replace(matcher.group(), "{b:" + serverName + "}");
+			
+			// Add it to tracked servers.
+			bungeeServers.add(serverName);
+		}
+		
+		
+		if (containedPlaceholders != null || bungeeServers != null) {
+			HologramLineData data = new HologramLineData(horse, customName);
+			if (containedPlaceholders != null) {
+				data.setContainedPlaceholders(containedPlaceholders);
+			}
+			if (bungeeServers != null) {
+				data.setContainedBungeeServers(bungeeServers);
+			}
+			
+			horsesToRefresh.add(data);
+			
+			updatePlaceholders(data);
 		}
 	}
 	
 	public void startTask() {
 		
-		if (taskId != -1) {
-			Bukkit.getScheduler().cancelTask(taskId);
+		if (taskID != -1) {
+			Bukkit.getScheduler().cancelTask(taskID);
 		}
 		
-		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(HolographicDisplays.getInstance(), new Runnable() {			
+		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(HolographicDisplays.getInstance(), new Runnable() {			
 			
 			public void run() {
 				
-				for (Placeholder placeholder : registeredPlaceholders) {
+				for (Placeholder placeholder : Placeholder.values()) {
 					
-					if (elapsedLongTicks % placeholder.getRefreshTicks() == 0) {
+					if (elapsedLongTicks % placeholder.getLongRefreshTicks() == 0) {
 						placeholder.update();
 					}
 
 				}
 				
-				Iterator<EntityAndNamePair> iter = horsesToRefresh.iterator();
-				EntityAndNamePair pair;
+				Iterator<HologramLineData> iter = horsesToRefresh.iterator();
+				
+				HologramLineData current;
 				
 				while (iter.hasNext()) {
-					pair = iter.next();
+					current = iter.next();
 					
-					if (pair.getHorse().isDead()) {
+					if (current.getHorse().isDead()) {
 						iter.remove();
 					} else {
-						updatePlaceholders(pair.getHorse(), pair.getSavedName());
+						updatePlaceholders(current);
 					}
 				}
 				
 				elapsedLongTicks++;
 			}
 			
-		}, 4L, 4L);
+		}, 4L, 4L); 
 	}
 	
-	private void updatePlaceholders(HologramHorse horse, String newCustomName) {
+	private void updatePlaceholders(HologramLineData data) {
 		
-		String oldCustomName = horse.getEntityCustomName();
+		String oldCustomName = data.getHorse().getEntityCustomName();
+		String newCustomName = data.getSavedName();
 		
-		for (Placeholder placeholder : registeredPlaceholders) {
-			newCustomName = newCustomName.replace(placeholder.getShortPlaceholder(), placeholder.getReplacement());
+		if (data.hasPlaceholders()) {
+			for (Placeholder placeholder : data.getPlaceholders()) {
+				newCustomName = newCustomName.replace(placeholder.getShortPlaceholder(), placeholder.getReplacement());
+			}
+		}
+		
+		if (data.hasBungeeServers()) {
+			for (String server : data.getBungeeServers()) {
+				newCustomName = newCustomName.replace("{b:" + server + "}", Integer.toString(ServerInfoTimer.getPlayersOnline(server)));
+			}
 		}
 		
 		// Update only if needed, don't send useless packets.
 		if (!oldCustomName.equals(newCustomName)) {
-			horse.forceSetCustomName(newCustomName);
+			data.getHorse().forceSetCustomName(newCustomName);
 		}
 	}
-
 }

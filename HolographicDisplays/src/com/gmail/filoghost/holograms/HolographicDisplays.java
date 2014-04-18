@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gmail.filoghost.holograms.SimpleUpdater.FailCause;
+import com.gmail.filoghost.holograms.bungee.ServerInfoTimer;
 import com.gmail.filoghost.holograms.commands.CommandHandler;
 import com.gmail.filoghost.holograms.exception.HologramNotFoundException;
 import com.gmail.filoghost.holograms.exception.InvalidLocationException;
@@ -25,6 +26,7 @@ import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
 import com.gmail.filoghost.holograms.placeholders.PlaceholderManager;
 import com.gmail.filoghost.holograms.placeholders.StaticPlaceholders;
+import com.gmail.filoghost.holograms.utils.BungeeCleanupTask;
 import com.gmail.filoghost.holograms.utils.StringUtils;
 import com.gmail.filoghost.holograms.utils.VersionUtils;
 import com.gmail.filoghost.holograms.utils.ConfigNode;
@@ -35,15 +37,6 @@ public class HolographicDisplays extends JavaPlugin {
 	private static Logger logger;
 	private static HolographicDisplays instance;
 	
-	private static double verticalLineSpacing;
-	private static String imageSymbol;
-	private static String transparencySymbol;
-	private static boolean updateNotification;
-	
-	private static String newVersion;
-
-	private static ChatColor transparencyColor;
-	
 	private static NmsManager nmsManager;
 	private CommandHandler commandHandler;
 	private static PlaceholderManager placeholderManager;
@@ -52,8 +45,10 @@ public class HolographicDisplays extends JavaPlugin {
 		instance = this;
 		logger = this.getLogger();
 		
+		// First of all, load the configuration.
 		loadConfiguration();
-		if (updateNotification) {
+		
+		if (Configuration.updateNotification) {
 			new SimpleUpdater(this, 75097, this.getFile()).checkForUpdates(new ResponseHandler() {
 				
 				@Override
@@ -62,7 +57,7 @@ public class HolographicDisplays extends JavaPlugin {
 
 						@Override
 						public void run() {
-							HolographicDisplays.newVersion = newVersion;
+							Configuration.newVersion = newVersion;
 							getLogger().info("Found a new version available: " + newVersion);
 							getLogger().info("Download it on Bukkit Dev:");
 							getLogger().info("dev.bukkit.org/bukkit-plugins/holographic-displays");
@@ -186,6 +181,9 @@ public class HolographicDisplays extends JavaPlugin {
 		
 		// Initalize static classes.
 		Database.initialize();
+		ServerInfoTimer.setRefreshSeconds(Configuration.bungeeRefreshSeconds);
+		ServerInfoTimer.startTask();
+		BungeeCleanupTask.start();
 		
 		Set<String> savedHolograms = Database.getHolograms();
 		if (savedHolograms != null && savedHolograms.size() > 0) {
@@ -246,21 +244,34 @@ public class HolographicDisplays extends JavaPlugin {
 			saveConfig();
 		}
 		
-		updateNotification = getConfig().getBoolean(ConfigNode.UPDATE_NOTIFICATION.getPath());
-		verticalLineSpacing = getConfig().getDouble(ConfigNode.VERTICAL_SPACING.getPath());
-		imageSymbol = StringUtils.toReadableFormat(getConfig().getString(ConfigNode.IMAGES_SYMBOL.getPath()));		
-		transparencySymbol = StringUtils.toReadableFormat(getConfig().getString(ConfigNode.TRANSPARENCY_SPACE.getPath()));
-		String tempColor = getConfig().getString(ConfigNode.TRANSPARENCY_COLOR.getPath()).replace("&", "§");
+		Configuration.updateNotification = ConfigNode.UPDATE_NOTIFICATION.getBoolean(getConfig());
+		Configuration.verticalLineSpacing = ConfigNode.VERTICAL_SPACING.getDouble(getConfig());
+		Configuration.imageSymbol = StringUtils.toReadableFormat(ConfigNode.IMAGES_SYMBOL.getString(getConfig()));		
+		Configuration.transparencySymbol = StringUtils.toReadableFormat(ConfigNode.TRANSPARENCY_SPACE.getString(getConfig()));
+		Configuration.bungeeRefreshSeconds = ConfigNode.BUNGEE_REFRESH_SECONDS.getInt(getConfig());
+		
+		if (Configuration.bungeeRefreshSeconds < 1) {
+			logger.warning("The minimum interval for pinging BungeeCord's servers is 1 second. It has been automatically set.");
+			Configuration.bungeeRefreshSeconds = 1;
+		}
+		
+		if (Configuration.bungeeRefreshSeconds > 30) {
+			logger.warning("The maximum interval for pinging BungeeCord's servers is 30 seconds. It has been automatically set.");
+			Configuration.bungeeRefreshSeconds = 30;
+		}
+		
+		
+		String tempColor = ConfigNode.TRANSPARENCY_COLOR.getString(getConfig()).replace("&", "§");
 		boolean foundColor = false;
 		for (ChatColor chatColor : ChatColor.values()) {
 			if (chatColor.toString().equals(tempColor)) {
-				transparencyColor = chatColor;
+				Configuration.transparencyColor = chatColor;
 				foundColor = true;
 			}
 		}
 		if (!foundColor) {
-			transparencyColor = ChatColor.DARK_GRAY;
-			logger.warning("You didn't set a valid chat color for the transparency, dark gray will be used.");
+			Configuration.transparencyColor = ChatColor.GRAY;
+			logger.warning("You didn't set a valid chat color for the transparency, light gray will be used.");
 		}
 	}
 
@@ -306,29 +317,5 @@ public class HolographicDisplays extends JavaPlugin {
 
 	public static PlaceholderManager getPlaceholderManager() {
 		return placeholderManager;
-	}
-
-	public static String getImageSymbol() {
-		return imageSymbol;
-	}
-
-	public static double getVerticalLineSpacing() {
-		return verticalLineSpacing;
-	}
-
-	public static String getTransparencySymbol() {
-		return transparencySymbol;
-	}
-
-	public static ChatColor getTransparencyColor() {
-		return transparencyColor;
-	}
-	
-	public static boolean updateNotification() {
-		return updateNotification;
-	}
-	
-	public static String getNewVersion() {
-		return newVersion;
 	}
 }

@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
-import com.gmail.filoghost.holograms.HolographicDisplays;
+import com.gmail.filoghost.holograms.Configuration;
 import com.gmail.filoghost.holograms.commands.Messages;
 import com.gmail.filoghost.holograms.nms.interfaces.NmsManager;
 import com.gmail.filoghost.holograms.object.APIHologramManager;
@@ -64,9 +64,9 @@ public class MainListener implements Listener {
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		if (HolographicDisplays.updateNotification() && HolographicDisplays.getNewVersion() != null) {
+		if (Configuration.updateNotification && Configuration.newVersion != null) {
 			if (event.getPlayer().hasPermission(Messages.MAIN_PERMISSION)) {
-				event.getPlayer().sendMessage("§3[HolographicDisplays] §bFound an update: " + HolographicDisplays.getNewVersion() + ". Download:");
+				event.getPlayer().sendMessage("§3[HolographicDisplays] §bFound an update: " + Configuration.newVersion + ". Download:");
 				event.getPlayer().sendMessage("§3>> §bhttp://dev.bukkit.org/bukkit-plugins/holographic-displays");
 			}
 		}

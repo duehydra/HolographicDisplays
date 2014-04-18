@@ -19,6 +19,7 @@ import org.json.simple.JSONValue;
 public final class SimpleUpdater {
 
 	private Plugin plugin;
+	@SuppressWarnings("unused")
 	private File pluginFile;
 	private int projectId;
 
@@ -103,8 +104,8 @@ public final class SimpleUpdater {
 				}
 				
 				String updateName = (String) ((JSONObject) filesArray.get(filesArray.size() - 1)).get("name");
-				String downloadUrl = (String) ((JSONObject) filesArray.get(filesArray.size() - 1)).get("downloadUrl");
-				String releaseType = (String) ((JSONObject) filesArray.get(filesArray.size() - 1)).get("releaseType");
+				//String downloadUrl = (String) ((JSONObject) filesArray.get(filesArray.size() - 1)).get("downloadUrl");
+				//String releaseType = (String) ((JSONObject) filesArray.get(filesArray.size() - 1)).get("releaseType");
 				
 				String newVersion = extractVersion(updateName);
 				

@@ -1,5 +1,7 @@
 package com.gmail.filoghost.holograms.utils;
 
+import org.bukkit.configuration.file.FileConfiguration;
+
 
 public enum ConfigNode {
 
@@ -7,7 +9,8 @@ public enum ConfigNode {
 	IMAGES_SYMBOL("images.symbol", "[x]"),
 	TRANSPARENCY_SPACE("images.transparency.space", " [|] "),
 	TRANSPARENCY_COLOR("images.transparency.color", "&7"),
-	UPDATE_NOTIFICATION("update-notification", true);
+	UPDATE_NOTIFICATION("update-notification", true),
+	BUNGEE_REFRESH_SECONDS("bungee-refresh-seconds", 3);
 	
 	private String path;
 	private Object value;
@@ -23,5 +26,21 @@ public enum ConfigNode {
 	
 	public Object getDefault() {
 		return value;
+	}
+	
+	public String getString(FileConfiguration config) {
+		return config.getString(path);
+	}
+	
+	public boolean getBoolean(FileConfiguration config) {
+		return config.getBoolean(path);
+	}
+	
+	public double getDouble(FileConfiguration config) {
+		return config.getDouble(path);
+	}
+	
+	public int getInt(FileConfiguration config) {
+		return config.getInt(path);
 	}
 }

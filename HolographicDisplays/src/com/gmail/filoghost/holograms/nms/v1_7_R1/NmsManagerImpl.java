@@ -1,6 +1,5 @@
 package com.gmail.filoghost.holograms.nms.v1_7_R1;
 
-import org.bukkit.Chunk;
 import org.bukkit.craftbukkit.v1_7_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -15,7 +14,6 @@ import com.gmail.filoghost.holograms.object.HologramComponent;
 import com.gmail.filoghost.holograms.utils.ReflectionUtils;
 
 import net.minecraft.server.v1_7_R1.EntityTypes;
-import net.minecraft.server.v1_7_R1.EntityWitherSkull;
 import net.minecraft.server.v1_7_R1.WorldServer;
 import net.minecraft.server.v1_7_R1.Entity;
 

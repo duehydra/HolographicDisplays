@@ -8,7 +8,6 @@ import org.bukkit.Chunk;
 /**
  * This class is only used by the plugin itself. Other plugins should just use the API.
  */
-
 public class HologramManager {
 
 	private static List<CraftHologram> pluginHolograms = new ArrayList<CraftHologram>();

@@ -2,7 +2,7 @@ package com.bobacadodl.imgmessage;
 
 import org.bukkit.ChatColor;
 
-import com.gmail.filoghost.holograms.HolographicDisplays;
+import com.gmail.filoghost.holograms.Configuration;
 import com.gmail.filoghost.holograms.exception.TooWideException;
 
 import java.awt.Color;
@@ -71,9 +71,9 @@ public class ImageMessage {
     private String[] toImgMessage(ChatColor[][] colors) {
     	
         String[] lines = new String[colors[0].length];
-        ChatColor transparencyColor = HolographicDisplays.getTransparencyColor();
-        String transparencySymbol = HolographicDisplays.getTransparencySymbol();
-        String imageSymbol = HolographicDisplays.getImageSymbol();
+        ChatColor transparencyColor = Configuration.transparencyColor;
+        String transparencySymbol = Configuration.transparencySymbol;
+        String imageSymbol = Configuration.imageSymbol;
         
         for (int y = 0; y < colors[0].length; y++) {
         	

@@ -1,8 +1,8 @@
 name: HolographicDisplays
 main: com.gmail.filoghost.holograms.HolographicDisplays
-version: 1.5.1
+version: 1.6
 
-softdepend: [Multiverse-Core, MultiWorld]
+softdepend: [Multiverse-Core, MultiWorld, My Worlds, My_Worlds]
 
 commands:
    holograms:

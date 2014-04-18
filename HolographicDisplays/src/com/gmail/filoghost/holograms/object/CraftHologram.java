@@ -7,6 +7,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import com.gmail.filoghost.holograms.Configuration;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.api.Hologram;
 import com.gmail.filoghost.holograms.exception.HologramDeletedException;
@@ -198,7 +199,7 @@ public class CraftHologram extends Hologram {
 		
 		try {
 			
-			double lineSpacing = HolographicDisplays.getVerticalLineSpacing();
+			double lineSpacing = Configuration.verticalLineSpacing;
 			
 			for (int i = 0; i < lines.size(); i++) {
 				String line = lines.get(i);

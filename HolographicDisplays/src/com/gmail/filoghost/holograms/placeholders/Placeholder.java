@@ -1,62 +1,72 @@
 package com.gmail.filoghost.holograms.placeholders;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.Bukkit;
 
-import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
-import com.gmail.filoghost.holograms.utils.EntityAndNamePair;
+public enum Placeholder {
 
-public abstract class Placeholder {
+	RAINBOW_TEXT("&u", "&u", 1) {
+
+		private String[] rainbowColors = new String[] {"§c", "§6", "§e", "§a", "§b", "§d"};
+		private int index = 0;
+		
+		@Override
+		public void update() {
+			currentReplacement = rainbowColors[index];
+			
+			index++;
+			if (index >= rainbowColors.length) {
+				index = 0;
+			}
+		}
+	},
+	
+	ONLINE_PLAYERS("{online}", "{o}", 5) {
+		
+		@Override
+		public void update() {
+			currentReplacement = Integer.toString(Bukkit.getOnlinePlayers().length);
+		}
+	},
+	
+	MAX_PLAYERS("{max_players}", "{m}", 50) {
+		
+		@Override
+		public void update() {
+			currentReplacement = Integer.toString(Bukkit.getMaxPlayers());
+		}
+	};
 	
 	private String longPlaceholder;
 	private String shortPlaceholder;
 	
-	// 1 longer refresh tick = 4 normal ticks
+	// 1 longer refresh tick = 4 normal ticks = 1/5 of second.
 	private int longerRefreshTicks;
 	
-	protected String currentReplacement = ""; // To avoid exceptions, just use a blank string.
+	// To avoid exceptions, just use a blank string. This will be used by the implementation.
+	protected String currentReplacement = "";
 	
-	private List<EntityAndNamePair> horsesToRefresh;
-	
-	public Placeholder(String longPlaceholder, String shortPlacehorser, int refreshTicks) {
-		horsesToRefresh = new ArrayList<EntityAndNamePair>();
+	private Placeholder(String longPlaceholder, String shortPlaceholder, int longTicks) {
 		this.longPlaceholder = longPlaceholder;
-		this.shortPlaceholder = shortPlacehorser;
-		this.longerRefreshTicks = refreshTicks;
+		this.shortPlaceholder = shortPlaceholder;
+		this.longerRefreshTicks = longTicks;
 	}
 	
-	public void trackIfNecessary(HologramHorse horse) {
-		String customName = horse.getEntityCustomName();
-		if (customName == null || customName.length() == 0) {
-			return;
-		}
-		
-		if (customName.contains(longPlaceholder)) {
-			horsesToRefresh.add(new EntityAndNamePair(horse, customName.replace(longPlaceholder, shortPlaceholder)));
-		}
-	}
-	
-	public String longToShort(String input) {
-		return input.replace(longPlaceholder, shortPlaceholder);
-	}
-	
-	// This calculates the new text to replace the placeholder.
-	public String getReplacement() {
-		return currentReplacement;
-	}
-	
-	public int getRefreshTicks() {
+	public int getLongRefreshTicks() {
 		return longerRefreshTicks;
 	}
 	
 	public String getLongPlaceholder() {
 		return longPlaceholder;
 	}
-
+	
 	public String getShortPlaceholder() {
 		return shortPlaceholder;
 	}
-
+	
 	public abstract void update();
+
+	public CharSequence getReplacement() {
+		return currentReplacement;
+	}
 
 }

@@ -1,6 +1,5 @@
 package com.gmail.filoghost.holograms.nms.v1_7_R3;
 
-import org.bukkit.Chunk;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -16,7 +15,6 @@ import com.gmail.filoghost.holograms.utils.ReflectionUtils;
 
 import net.minecraft.server.v1_7_R3.Entity;
 import net.minecraft.server.v1_7_R3.EntityTypes;
-import net.minecraft.server.v1_7_R3.EntityWitherSkull;
 import net.minecraft.server.v1_7_R3.WorldServer;
 
 public class NmsManagerImpl implements NmsManager {

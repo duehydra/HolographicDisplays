@@ -6,7 +6,9 @@ import java.util.Set;
 
 import org.bukkit.command.CommandSender;
 
+import com.gmail.filoghost.holograms.Configuration;
 import com.gmail.filoghost.holograms.HolographicDisplays;
+import com.gmail.filoghost.holograms.bungee.ServerInfoTimer;
 import com.gmail.filoghost.holograms.commands.HologramSubCommand;
 import com.gmail.filoghost.holograms.commands.Messages;
 import com.gmail.filoghost.holograms.exception.CommandException;
@@ -43,6 +45,9 @@ public class ReloadCommand extends HologramSubCommand {
 			
 			HolographicDisplays.getInstance().reloadConfig();
 			HolographicDisplays.getInstance().loadConfiguration();
+			
+			ServerInfoTimer.setRefreshSeconds(Configuration.bungeeRefreshSeconds);
+			ServerInfoTimer.startTask();
 			
 			StaticPlaceholders.load();
 			

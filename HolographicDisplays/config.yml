@@ -9,3 +9,5 @@ images:
   transparency:
     space: ' [|] '
     color: '&7'
+bungee-refresh-seconds: 3
+update-notification: true
