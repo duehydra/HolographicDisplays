@@ -18,6 +18,7 @@ import com.gmail.filoghost.holograms.exception.WorldNotFoundException;
 import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
+import com.gmail.filoghost.holograms.placeholders.AnimationManager;
 import com.gmail.filoghost.holograms.placeholders.StaticPlaceholders;
 
 public class ReloadCommand extends HologramSubCommand {
@@ -53,6 +54,7 @@ public class ReloadCommand extends HologramSubCommand {
 			
 			Database.initialize();
 			HologramManager.clearAll();
+			AnimationManager.loadAnimations();
 
 			Set<String> savedHolograms = Database.getHolograms();
 			if (savedHolograms != null && savedHolograms.size() > 0) {

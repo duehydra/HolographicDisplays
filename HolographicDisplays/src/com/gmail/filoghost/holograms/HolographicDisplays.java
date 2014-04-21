@@ -24,8 +24,10 @@ import com.gmail.filoghost.holograms.nms.mcpc.v1_7_R3_MCPCRegistry;
 import com.gmail.filoghost.holograms.object.Database;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramManager;
+import com.gmail.filoghost.holograms.placeholders.AnimationManager;
 import com.gmail.filoghost.holograms.placeholders.PlaceholderManager;
 import com.gmail.filoghost.holograms.placeholders.StaticPlaceholders;
+import com.gmail.filoghost.holograms.protocol.ProtocolLibHook;
 import com.gmail.filoghost.holograms.utils.BungeeCleanupTask;
 import com.gmail.filoghost.holograms.utils.StringUtils;
 import com.gmail.filoghost.holograms.utils.VersionUtils;
@@ -43,8 +45,8 @@ public class HolographicDisplays extends JavaPlugin {
 	
 	public void onEnable() {
 		instance = this;
-		logger = this.getLogger();
-		
+		logger = getLogger();
+
 		// First of all, load the configuration.
 		loadConfiguration();
 		
@@ -58,9 +60,9 @@ public class HolographicDisplays extends JavaPlugin {
 						@Override
 						public void run() {
 							Configuration.newVersion = newVersion;
-							getLogger().info("Found a new version available: " + newVersion);
-							getLogger().info("Download it on Bukkit Dev:");
-							getLogger().info("dev.bukkit.org/bukkit-plugins/holographic-displays");
+							logger.info("Found a new version available: " + newVersion);
+							logger.info("Download it on Bukkit Dev:");
+							logger.info("dev.bukkit.org/bukkit-plugins/holographic-displays");
 						}
 						
 					});
@@ -83,13 +85,6 @@ public class HolographicDisplays extends JavaPlugin {
 					}
 				}
 			});
-		}
-		
-		try {
-			StaticPlaceholders.load();
-		} catch (Exception e) {
-			e.printStackTrace();
-			getLogger().severe("Unable to read placeholders.yml! Is the file in use?");
 		}
 		
 		String version = VersionUtils.getBukkitVersion();
@@ -177,9 +172,34 @@ public class HolographicDisplays extends JavaPlugin {
 			return;
 		}
 		
+		// Load placeholders.yml
+		try {
+			StaticPlaceholders.load();
+		} catch (Exception e) {
+			e.printStackTrace();
+			getLogger().severe("Unable to read placeholders.yml! Is the file in use?");
+		}
+		
+		// ProtocolLib check
+		try {
+			ProtocolLibHook.initialize();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.warning("Failed to load ProtocolLib support. Is it updated?");
+		}
+		
+		// Load animation files
+		try {
+			AnimationManager.loadAnimations();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.warning("Failed to load animation files!");
+		}
+		
+		// Instantiate a PlaceholderManager
 		placeholderManager = new PlaceholderManager();
 		
-		// Initalize static classes.
+		// Initalize other static classes.
 		Database.initialize();
 		ServerInfoTimer.setRefreshSeconds(Configuration.bungeeRefreshSeconds);
 		ServerInfoTimer.startTask();

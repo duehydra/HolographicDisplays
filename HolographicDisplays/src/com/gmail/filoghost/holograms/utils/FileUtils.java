@@ -17,6 +17,10 @@ import com.gmail.filoghost.holograms.exception.UnreadableImageException;
 public class FileUtils {
 
 	public static List<String> readLines(String fileName) throws FileNotFoundException, IOException, Exception {
+		return readLines( new File(HolographicDisplays.getInstance().getDataFolder(), fileName));
+	}
+	
+	public static List<String> readLines(File file) throws FileNotFoundException, IOException, Exception {
 
 		BufferedReader br = null;
 
@@ -24,7 +28,6 @@ public class FileUtils {
 
 			List<String> lines = new ArrayList<String>();
 
-			File file = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
 			if (!file.exists()) {
 				throw new FileNotFoundException();
 			}

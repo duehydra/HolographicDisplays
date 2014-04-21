@@ -29,6 +29,7 @@ public class CommandHandler implements CommandExecutor {
 		registerSubCommand(new ListCommand());
 		registerSubCommand(new TeleportCommand());
 		registerSubCommand(new MovehereCommand());
+		registerSubCommand(new FixCommand());
 		registerSubCommand(new SaveCommand());
 		registerSubCommand(new ReloadCommand());
 		

@@ -1,8 +1,10 @@
 package com.gmail.filoghost.holograms.api;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.object.APIHologramManager;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 
@@ -33,5 +35,12 @@ public class HolographicDisplaysAPI {
 	 */
 	public static Hologram[] getHolograms(Plugin plugin) {
 		return APIHologramManager.getHolograms(plugin);
+	}
+	
+	/**
+	 * @return if the entity is part of a hologram.
+	 */
+	public static boolean isHologramEntity(Entity bukkitEntity) {
+		return HolographicDisplays.getNmsManager().isHologramEntity(bukkitEntity);
 	}
 }

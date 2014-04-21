@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.bungee.ServerInfoTimer;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
-import com.gmail.filoghost.holograms.utils.HologramLineData;
+import com.gmail.filoghost.holograms.object.HologramLineData;
 
 public class PlaceholderManager {
 	
@@ -19,7 +19,8 @@ public class PlaceholderManager {
 	private static List<HologramLineData> horsesToRefresh;
 	private static long elapsedLongTicks;
 	
-	private static final Pattern BUNGEE_PATTERN = Pattern.compile("(\\{bungee:|\\{online:|\\{server:)(.+)(\\})");
+	private static final Pattern BUNGEE_PATTERN = Pattern.compile("(\\{online:)(.+)(\\})");
+	private static final Pattern ANIMATION_PATTERN = Pattern.compile("(\\{animation:)(.+)(\\})");
 	
 	public PlaceholderManager() {
 		horsesToRefresh = new ArrayList<HologramLineData>();
@@ -35,6 +36,7 @@ public class PlaceholderManager {
 			return;
 		}
 
+		// TODO not really safe, could change in the future.
 		if (!(customName.contains("{") && customName.contains("}")) && !customName.contains("&u")) {
 			// All the placeholders have curly brackets or &u, optimization.
 			return;
@@ -44,7 +46,7 @@ public class PlaceholderManager {
 		List<Placeholder> containedPlaceholders = null;
 		List<String> bungeeServers = null;
 		
-		for (Placeholder placeholder : Placeholder.values()) {
+		for (Placeholder placeholder : PlaceholdersList.getDefaults()) {
 			
 			if (customName.contains(placeholder.getLongPlaceholder())) {
 				
@@ -74,10 +76,34 @@ public class PlaceholderManager {
 			ServerInfoTimer.track(serverName); // Track this server.
 			
 			// Shorter placeholder without spaces.
-			customName = customName.replace(matcher.group(), "{b:" + serverName + "}");
+			customName = customName.replace(matcher.group(), "{online:" + serverName + "}");
 			
 			// Add it to tracked servers.
 			bungeeServers.add(serverName);
+		}
+		
+		// Animation pattern. (Reuse matcher)
+		matcher = ANIMATION_PATTERN.matcher(customName);
+		while (matcher.find()) {
+
+			String fileName = matcher.group(2).replace(" ", "");
+			AnimatedPlaceholder animated = AnimationManager.getFromFilename(fileName);
+			
+			// If exists...
+			if (animated != null) {
+				
+				customName = customName.replace(matcher.group(), "{animation:" + fileName + "}");
+				
+				if (containedPlaceholders == null) {
+					// Now we create a list, because at least one placeholder has been found.
+					containedPlaceholders = new ArrayList<Placeholder>();
+				}
+				
+				containedPlaceholders.add(animated);
+			} else {
+				
+				horse.forceSetCustomName(customName.replace(matcher.group(), "{File not found: " + fileName + "}"));
+			}
 		}
 		
 		
@@ -106,12 +132,16 @@ public class PlaceholderManager {
 			
 			public void run() {
 				
-				for (Placeholder placeholder : Placeholder.values()) {
-					
+				for (Placeholder placeholder : PlaceholdersList.getDefaults()) {
 					if (elapsedLongTicks % placeholder.getLongRefreshTicks() == 0) {
 						placeholder.update();
 					}
-
+				}
+				
+				for (Placeholder placeholder : PlaceholdersList.getAnimated()) {
+					if (elapsedLongTicks % placeholder.getLongRefreshTicks() == 0) {
+						placeholder.update();
+					}
 				}
 				
 				Iterator<HologramLineData> iter = horsesToRefresh.iterator();
@@ -147,7 +177,7 @@ public class PlaceholderManager {
 		
 		if (data.hasBungeeServers()) {
 			for (String server : data.getBungeeServers()) {
-				newCustomName = newCustomName.replace("{b:" + server + "}", Integer.toString(ServerInfoTimer.getPlayersOnline(server)));
+				newCustomName = newCustomName.replace("{online:" + server + "}", Integer.toString(ServerInfoTimer.getPlayersOnline(server)));
 			}
 		}
 		

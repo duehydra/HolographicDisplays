@@ -2,6 +2,7 @@ package com.gmail.filoghost.holograms.nms.v1_7_R1;
 
 import org.bukkit.craftbukkit.v1_7_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
@@ -55,6 +56,10 @@ public class NmsManagerImpl implements NmsManager {
 	
 	@Override
 	public boolean isHologramEntity(org.bukkit.entity.Entity bukkitEntity) {
+		if (bukkitEntity.getType() != EntityType.WITHER_SKULL && bukkitEntity.getType() != EntityType.HORSE) {
+			// If it's not a skull or a horse, don't even cast to CraftEntity.
+			return false;
+		}
 		return ((CraftEntity) bukkitEntity).getHandle() instanceof HologramComponent;
 	}
 

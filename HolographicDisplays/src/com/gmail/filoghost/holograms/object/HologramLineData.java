@@ -1,4 +1,4 @@
-package com.gmail.filoghost.holograms.utils;
+package com.gmail.filoghost.holograms.object;
 
 import java.util.List;
 
