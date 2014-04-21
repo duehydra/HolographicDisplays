@@ -8,6 +8,7 @@ import java.util.Map;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.utils.FileUtils;
 import com.gmail.filoghost.holograms.utils.AnimationData;
+import com.gmail.filoghost.holograms.utils.StringUtils;
 
 public class AnimationManager {
 	
@@ -47,7 +48,7 @@ public class AnimationManager {
 						int tempSpeed = Integer.parseInt(firstLine);
 						if (tempSpeed > 0) {
 							
-							//Ok, it's valid.
+							// Ok, it's valid.
 							speed = tempSpeed;
 							validSpeedFound = true;
 
@@ -63,6 +64,11 @@ public class AnimationManager {
 				if (lines.size() == 0) {
 					lines.add("{No lines: " + file.getName() + "}");
 					HolographicDisplays.getInstance().getLogger().warning("Could not find any line in '" + file.getName() + "' except for the speed. You should add at least one more line.");
+				}
+				
+				// Replace placeholders.
+				for (int i = 0; i < lines.size(); i++) {
+					lines.set(i, StringUtils.toReadableFormat(lines.get(i)));
 				}
 				
 				files.put("{animation:" + file.getName() + "}", new AnimationData(lines, speed));
