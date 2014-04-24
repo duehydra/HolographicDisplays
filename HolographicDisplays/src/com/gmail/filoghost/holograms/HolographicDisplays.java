@@ -46,8 +46,17 @@ public class HolographicDisplays extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		logger = getLogger();
+		
+		
+		// Load placeholders.yml.
+		try {
+			StaticPlaceholders.load();
+		} catch (Exception e) {
+			e.printStackTrace();
+			getLogger().severe("Unable to read placeholders.yml! Is the file in use?");
+		}
 
-		// First of all, load the configuration.
+		// Load the configuration.
 		loadConfiguration();
 		
 		if (Configuration.updateNotification) {
@@ -106,6 +115,7 @@ public class HolographicDisplays extends JavaPlugin {
 				version = null;
 			}
 		}
+
 		
 		// It's simple, we don't need reflection.
 		if ("v1_6_R3".equals(version)) {
@@ -172,17 +182,11 @@ public class HolographicDisplays extends JavaPlugin {
 			return;
 		}
 		
-		// Load placeholders.yml
-		try {
-			StaticPlaceholders.load();
-		} catch (Exception e) {
-			e.printStackTrace();
-			getLogger().severe("Unable to read placeholders.yml! Is the file in use?");
-		}
-		
 		// ProtocolLib check
 		try {
-			ProtocolLibHook.initialize();
+			if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+				ProtocolLibHook.initialize();
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.warning("Failed to load ProtocolLib support. Is it updated?");
