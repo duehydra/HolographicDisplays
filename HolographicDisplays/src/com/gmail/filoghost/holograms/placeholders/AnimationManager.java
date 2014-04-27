@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.utils.FileUtils;
-import com.gmail.filoghost.holograms.utils.AnimationData;
 import com.gmail.filoghost.holograms.utils.StringUtils;
 
 public class AnimationManager {
@@ -33,7 +32,7 @@ public class AnimationManager {
 					continue;
 				}
 				
-				int speed = 2;
+				int speed = 5;
 				boolean validSpeedFound = false;
 				
 				String firstLine = lines.get(0).trim();
@@ -58,7 +57,7 @@ public class AnimationManager {
 				}
 				
 				if (!validSpeedFound) {
-					HolographicDisplays.getInstance().getLogger().warning("Could not find 'speed: <number>' in the file '" + file.getName() + "'. Default speed of 2 will be used.");
+					HolographicDisplays.getInstance().getLogger().warning("Could not find 'speed: <number>' in the file '" + file.getName() + "'. Default speed of 5 (0.5 seconds) will be used.");
 				}
 				
 				if (lines.size() == 0) {
@@ -98,6 +97,68 @@ public class AnimationManager {
 			AnimatedPlaceholder animated = new AnimatedPlaceholder(placeholderString, data.getSpeed(), data.getLines());
 			PlaceholdersList.addAnimatedPlaceholder(animated);
 			return animated;
+		}
+		
+		// Try to load it from a file.
+		File animationFile = new File(HolographicDisplays.getInstance().getDataFolder(), "animations" + File.separator + filename);
+		if (animationFile.exists()) {
+			try {
+				List<String> lines = FileUtils.readLines(animationFile);
+				if (lines.size() == 0) {
+					// Found but empty.
+					return null;
+				}
+				
+				int speed = 5;
+				boolean validSpeedFound = false;
+				
+				String firstLine = lines.get(0).trim();
+				if (firstLine.toLowerCase().startsWith("speed:")) {
+					
+					// Do not consider it.
+					lines.remove(0);
+					
+					firstLine = firstLine.substring("speed:".length()).trim();
+					
+					try {
+						int tempSpeed = Integer.parseInt(firstLine);
+						if (tempSpeed > 0) {
+							
+							// Ok, it's valid.
+							speed = tempSpeed;
+							validSpeedFound = true;
+
+						}
+					} catch (NumberFormatException e) {
+					}
+				}
+				
+				if (!validSpeedFound) {
+					HolographicDisplays.logWarning("Could not find 'speed: <number>' in the file '" + animationFile.getName() + "'. Default speed of 5 (0.5 seconds) will be used.");
+				}
+				
+				if (lines.size() == 0) {
+					lines.add("{No lines: " + animationFile.getName() + "}");
+					HolographicDisplays.logWarning("Could not find any line in '" + animationFile.getName() + "' except for the speed. You should add at least one more line.");
+				}
+				
+				// Replace placeholders.
+				for (int i = 0; i < lines.size(); i++) {
+					lines.set(i, StringUtils.toReadableFormat(lines.get(i)));
+				}
+				
+				AnimationData animation = new AnimationData(lines, speed);
+				files.put("{animation:" + animationFile.getName() + "}", animation);
+				HolographicDisplays.logInfo("Loaded animation '"  + animationFile.getName() + "', speed " + speed + ".");
+				
+				AnimatedPlaceholder animated = new AnimatedPlaceholder(placeholderString, animation.getSpeed(), animation.getLines());
+				PlaceholdersList.addAnimatedPlaceholder(animated);
+				return animated;
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				HolographicDisplays.logSevere("Couldn't load the file '" + animationFile.getName() + "'!");
+			}
 		}
 		
 		// Not found & not created

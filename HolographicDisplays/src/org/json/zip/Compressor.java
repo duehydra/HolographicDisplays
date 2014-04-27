@@ -282,7 +282,8 @@ public class Compressor extends JSONzip {
      *            or String, or Boolean, or JSONObject.NULL, or null.
      * @throws JSONException
      */
-    private void writeJSON(Object value) throws JSONException {
+    @SuppressWarnings("rawtypes")
+	private void writeJSON(Object value) throws JSONException {
         if (JSONObject.NULL.equals(value)) {
             write(zipNull, 3);
         } else if (Boolean.FALSE.equals(value)) {
@@ -342,7 +343,8 @@ public class Compressor extends JSONzip {
      * @return
      * @throws JSONException
      */
-    private void writeObject(JSONObject jsonobject) throws JSONException {
+    @SuppressWarnings("rawtypes")
+	private void writeObject(JSONObject jsonobject) throws JSONException {
 
 // JSONzip has two encodings for objects: Empty Objects (zipEmptyObject) and
 // non-empty objects (zipObject).

@@ -133,13 +133,13 @@ public class PlaceholderManager {
 			public void run() {
 				
 				for (Placeholder placeholder : PlaceholdersList.getDefaults()) {
-					if (elapsedLongTicks % placeholder.getLongRefreshTicks() == 0) {
+					if (elapsedLongTicks % placeholder.getTenthsToRefresh() == 0) {
 						placeholder.update();
 					}
 				}
 				
 				for (Placeholder placeholder : PlaceholdersList.getAnimated()) {
-					if (elapsedLongTicks % placeholder.getLongRefreshTicks() == 0) {
+					if (elapsedLongTicks % placeholder.getTenthsToRefresh() == 0) {
 						placeholder.update();
 					}
 				}
@@ -161,7 +161,7 @@ public class PlaceholderManager {
 				elapsedLongTicks++;
 			}
 			
-		}, 4L, 4L); 
+		}, 2L, 2L); 
 	}
 	
 	private void updatePlaceholders(HologramLineData data) {

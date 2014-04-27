@@ -29,7 +29,7 @@ public class CreateCommand extends HologramSubCommand {
 
 	@Override
 	public String getPossibleArguments() {
-		return "<hologramName>";
+		return "<hologramName> [text]";
 	}
 
 	@Override
@@ -45,10 +45,16 @@ public class CreateCommand extends HologramSubCommand {
 			String name = StringUtils.validateName(args[0].toLowerCase());
 			CommandValidator.isTrue(!HologramManager.isExistingHologram(name), "A hologram with that name already exists.");
 						
-			CraftHologram hologram = new CraftHologram(StringUtils.validateName(name), player.getLocation());
+			CraftHologram hologram = new CraftHologram(name, player.getLocation());
 			HologramManager.addHologram(hologram);
 			
-			hologram.addLine("Default hologram. Change it with " + Format.HIGHLIGHT + "/hd edit " + hologram.getName());
+			if (args.length > 1) {
+				hologram.addLine(StringUtils.toReadableFormat(StringUtils.join(args, " ", 1, args.length)));
+				sender.sendMessage("§7(Change the lines with /hd edit " + hologram.getName() + ")");
+			} else {
+				hologram.addLine("Default hologram. Change it with " + Format.HIGHLIGHT + "/hd edit " + hologram.getName());
+			}
+				
 			if (!hologram.forceUpdate()) {
 				player.sendMessage(Messages.FAILED_TO_SPAWN_HERE);
 			}

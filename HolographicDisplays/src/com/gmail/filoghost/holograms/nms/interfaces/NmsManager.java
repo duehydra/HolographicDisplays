@@ -17,9 +17,7 @@ public interface NmsManager {
 	public CraftHologram getHologram(org.bukkit.entity.Entity bukkitEntity);
 	
 	public FancyMessage newFancyMessage(String text);
-	
-	public int getCustomNameLimit();
-	
+
 	public boolean hasChatHoverFeature();
 	
 	// Used for MCPC.

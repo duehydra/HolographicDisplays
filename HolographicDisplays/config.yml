@@ -10,4 +10,5 @@ images:
     space: ' [|] '
     color: '&7'
 bungee-refresh-seconds: 3
+time-format: 'H:mm'
 update-notification: true

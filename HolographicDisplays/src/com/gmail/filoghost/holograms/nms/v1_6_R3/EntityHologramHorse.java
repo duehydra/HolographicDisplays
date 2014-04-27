@@ -108,7 +108,10 @@ public class EntityHologramHorse extends EntityHorse implements HologramComponen
 	}
 	
 	public void forceSetCustomName(String name) {
-		super.setCustomName(name);
+		if (name != null && name.length() > 64) {
+			name = name.substring(0, 64);
+		}
+ 		super.setCustomName(name);
 		super.setCustomNameVisible(name != null);
 	}
 	

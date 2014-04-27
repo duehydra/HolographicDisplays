@@ -80,11 +80,6 @@ public class NmsManagerImpl implements NmsManager {
 	}
 
 	@Override
-	public int getCustomNameLimit() {
-		return 64;
-	}
-
-	@Override
 	public boolean hasChatHoverFeature() {
 		return false;
 	}

@@ -45,6 +45,11 @@ public class ListCommand extends HologramSubCommand {
 		if (HologramManager.size() % HOLOGRAMS_PER_PAGE != 0) {
 			totalPages++;
 		}
+		
+		
+		if (HologramManager.size() == 0) {
+			throw new CommandException("There are no holograms yet. Create one with /hd create.");
+		}
 
 		sender.sendMessage("");
 		sender.sendMessage(Format.formatTitle("Holograms list §f(Page " + page + " of " + totalPages + ")"));

@@ -5,21 +5,21 @@ public abstract class Placeholder {
 	private String longPlaceholder;
 	private String shortPlaceholder;
 	
-	// 1 longer refresh tick = 4 normal ticks = 1/5 of second.
-	private int longerRefreshTicks;
+	// How many tenths of second between each refresh
+	private int tenthsToRefresh;
 	
 	// To avoid exceptions, just use the long placeholder as default;
 	protected String currentReplacement;
 	
-	public Placeholder(String longPlaceholder, String shortPlaceholder, int longTicks) {
+	public Placeholder(String longPlaceholder, String shortPlaceholder, int tenthsToRefresh) {
 		this.longPlaceholder = longPlaceholder;
 		this.shortPlaceholder = shortPlaceholder;
-		this.longerRefreshTicks = longTicks;
+		this.tenthsToRefresh = tenthsToRefresh;
 		currentReplacement = longPlaceholder;
 	}
 	
-	public int getLongRefreshTicks() {
-		return longerRefreshTicks;
+	public int getTenthsToRefresh() {
+		return tenthsToRefresh;
 	}
 	
 	public String getLongPlaceholder() {

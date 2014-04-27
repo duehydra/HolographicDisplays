@@ -1,5 +1,7 @@
 package com.gmail.filoghost.holograms;
 
+import java.text.SimpleDateFormat;
+
 import org.bukkit.ChatColor;
 
 public class Configuration {
@@ -10,6 +12,7 @@ public class Configuration {
 	public static boolean updateNotification;
 	public static ChatColor transparencyColor;
 	public static int bungeeRefreshSeconds;
+	public static SimpleDateFormat timeFormat;
 	
 	// Used for the updater.
 	public static String newVersion;

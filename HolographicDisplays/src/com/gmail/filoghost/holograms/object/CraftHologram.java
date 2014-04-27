@@ -14,6 +14,7 @@ import com.gmail.filoghost.holograms.exception.HologramDeletedException;
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
+import com.gmail.filoghost.holograms.utils.VisibilityManager;
 
 /**
  * This class is only used by the plugin itself. Other plugins should just use the API.
@@ -25,9 +26,10 @@ public class CraftHologram extends Hologram {
 	
 	private List<HologramHorse> horses;
 	private List<HologramWitherSkull> witherSkulls;
-	
 	private List<String> lines;	
-	private int customNameLimit;
+	
+	private boolean useVisibilityManager;
+	private VisibilityManager visibilityManager;
 	
 	private String name;
 	private World bukkitWorld;
@@ -49,7 +51,7 @@ public class CraftHologram extends Hologram {
 		lines = new ArrayList<String>();
 		horses = new ArrayList<HologramHorse>();
 		witherSkulls = new ArrayList<HologramWitherSkull>();
-		customNameLimit = HolographicDisplays.getNmsManager().getCustomNameLimit();
+		visibilityManager = new VisibilityManager();
 	}
 	
 	public void setLocation(Location source) {
@@ -129,11 +131,7 @@ public class CraftHologram extends Hologram {
 		if (message == null) {
 			message = "";
 		}
-		
-		if (message.length() > customNameLimit) {
-			message = message.substring(0, customNameLimit);
-		}
-		
+
 		lines.add(message);
 	}
 	
@@ -141,11 +139,7 @@ public class CraftHologram extends Hologram {
 		if (message == null) {
 			message = "";
 		}
-		
-		if (message.length() > customNameLimit) {
-			message = message.substring(0, customNameLimit);
-		}
-		
+
 		lines.add(index, message);
 	}
 
@@ -156,10 +150,6 @@ public class CraftHologram extends Hologram {
 	public void setLine(int index, String text) {
 		if (text == null) {
 			text = "";
-		}
-		
-		if (text.length() > customNameLimit) {
-			text = text.substring(0, customNameLimit);
 		}
 		
 		lines.set(index, text);
@@ -235,6 +225,18 @@ public class CraftHologram extends Hologram {
 		for (HologramWitherSkull witherSkull : witherSkulls) {
 			witherSkull.killEntity();
 		}
+	}
+	
+	public void setUseVisibilityManager(boolean use) {
+		this.useVisibilityManager = use;
+	}
+	
+	public boolean useVisibilityManager() {
+		return useVisibilityManager;
+	}
+	
+	public VisibilityManager getVisibilityManager() {
+		return visibilityManager;
 	}
 	
 	@Override

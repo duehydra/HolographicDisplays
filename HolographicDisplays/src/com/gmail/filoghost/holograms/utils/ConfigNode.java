@@ -10,7 +10,8 @@ public enum ConfigNode {
 	TRANSPARENCY_SPACE("images.transparency.space", " [|] "),
 	TRANSPARENCY_COLOR("images.transparency.color", "&7"),
 	UPDATE_NOTIFICATION("update-notification", true),
-	BUNGEE_REFRESH_SECONDS("bungee-refresh-seconds", 3);
+	BUNGEE_REFRESH_SECONDS("bungee-refresh-seconds", 3),
+	TIME_FORMAT("time-format", "H:mm");
 	
 	private String path;
 	private Object value;

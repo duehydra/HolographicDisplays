@@ -5,8 +5,8 @@ public class AnimatedPlaceholder extends Placeholder {
 	String[] frames;
 	private int index;
 	
-	public AnimatedPlaceholder(String longPlaceholder, int longTicks, String[] frames) {
-		super(longPlaceholder, longPlaceholder, longTicks);
+	public AnimatedPlaceholder(String longPlaceholder, int tenthsToRefresh, String[] frames) {
+		super(longPlaceholder, longPlaceholder, tenthsToRefresh);
 		this.frames = frames;
 		update();
 	}

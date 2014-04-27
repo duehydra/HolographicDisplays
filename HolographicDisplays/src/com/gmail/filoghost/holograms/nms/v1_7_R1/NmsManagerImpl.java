@@ -78,11 +78,6 @@ public class NmsManagerImpl implements NmsManager {
 	public FancyMessage newFancyMessage(String text) {
 		return new FancyMessageImpl(text);
 	}
-	
-	@Override
-	public int getCustomNameLimit() {
-		return 300;
-	}
 
 	@Override
 	public boolean hasChatHoverFeature() {

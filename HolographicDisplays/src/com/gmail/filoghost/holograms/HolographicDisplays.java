@@ -1,6 +1,7 @@
 package com.gmail.filoghost.holograms;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -273,6 +274,12 @@ public class HolographicDisplays extends JavaPlugin {
 		Configuration.imageSymbol = StringUtils.toReadableFormat(ConfigNode.IMAGES_SYMBOL.getString(getConfig()));		
 		Configuration.transparencySymbol = StringUtils.toReadableFormat(ConfigNode.TRANSPARENCY_SPACE.getString(getConfig()));
 		Configuration.bungeeRefreshSeconds = ConfigNode.BUNGEE_REFRESH_SECONDS.getInt(getConfig());
+		try {
+			Configuration.timeFormat = new SimpleDateFormat(StringUtils.toReadableFormat(ConfigNode.TIME_FORMAT.getString(getConfig())));
+		} catch (IllegalArgumentException ex) {
+			Configuration.timeFormat = new SimpleDateFormat("H:mm");
+			logger.warning("Time format not valid, using the default.");
+		}
 		
 		if (Configuration.bungeeRefreshSeconds < 1) {
 			logger.warning("The minimum interval for pinging BungeeCord's servers is 1 second. It has been automatically set.");
@@ -341,5 +348,17 @@ public class HolographicDisplays extends JavaPlugin {
 
 	public static PlaceholderManager getPlaceholderManager() {
 		return placeholderManager;
+	}
+	
+	public static void logInfo(String message) {
+		logger.info(message);
+	}
+	
+	public static void logWarning(String message) {
+		logger.warning(message);
+	}
+	
+	public static void logSevere(String message) {
+		logger.severe(message);
 	}
 }
